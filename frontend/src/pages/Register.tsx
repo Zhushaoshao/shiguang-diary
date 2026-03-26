@@ -94,30 +94,37 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
+    <div className="min-h-screen bg-neutral-bg flex items-center justify-center p-4 relative overflow-hidden">
+      {/* 背景装饰 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-10 right-20 w-72 h-72 bg-sunset-peach/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-10 left-20 w-80 h-80 bg-sunset-amber/10 rounded-full blur-3xl animate-float" style={{animationDelay: '1.5s'}}></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-sunset-lavender/5 rounded-full blur-3xl animate-float" style={{animationDelay: '0.5s'}}></div>
+      </div>
+
+      <div className="max-w-md w-full relative z-10">
         {/* Logo 和标题 */}
-        <div className="text-center mb-8">
-          <h1 className="text-6xl font-heading text-text mb-2">拾光日记</h1>
-          <p className="text-gray-600">开始记录你的生活</p>
+        <div className="text-center mb-8 animate-fade-in">
+          <h1 className="text-5xl font-display font-bold text-gradient-sunset mb-2">拾光日记</h1>
+          <p className="text-neutral-secondary font-display italic">开始记录你的生活</p>
         </div>
 
         {/* 注册表单 */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="diary-paper-card p-8 animate-slide-up">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-12 h-12 bg-cta/10 rounded-full flex items-center justify-center">
-              <UserPlus size={24} className="text-cta" />
+            <div className="w-16 h-16 bg-gradient-to-br from-sunset-peach/20 to-sunset-coral/20 rounded-xl flex items-center justify-center shadow-paper">
+              <UserPlus size={32} strokeWidth={2} className="text-sunset-peach" />
             </div>
           </div>
 
-          <h2 className="text-3xl font-heading text-center text-text mb-6">
-            注册
+          <h2 className="text-2xl font-display font-semibold text-center text-neutral-ink mb-6">
+            注册账号
           </h2>
 
           {/* 错误提示 */}
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
-              <p className="text-sm">{error}</p>
+            <div className="card-paper bg-error/10 border-2 border-error/30 text-error px-4 py-3 mb-6 animate-slide-up">
+              <p className="text-sm font-medium">{error}</p>
             </div>
           )}
 
@@ -126,13 +133,13 @@ const Register = () => {
             <div>
               <label
                 htmlFor="username"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="label-paper"
               >
                 用户名
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User size={20} className="text-gray-400" />
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <User size={20} strokeWidth={2} className="text-primary-500" />
                 </div>
                 <input
                   id="username"
@@ -141,7 +148,7 @@ const Register = () => {
                   value={formData.username}
                   onChange={handleChange}
                   placeholder="请输入用户名（至少3个字符）"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cta focus:border-transparent transition-all duration-200"
+                  className="input-paper w-full pl-12 pr-4"
                   required
                 />
               </div>
@@ -151,13 +158,13 @@ const Register = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="label-paper"
               >
                 邮箱
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail size={20} className="text-gray-400" />
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Mail size={20} strokeWidth={2} className="text-primary-500" />
                 </div>
                 <input
                   id="email"
@@ -166,7 +173,7 @@ const Register = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="请输入邮箱地址"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cta focus:border-transparent transition-all duration-200"
+                  className="input-paper w-full pl-12 pr-4"
                   required
                 />
               </div>
@@ -176,13 +183,13 @@ const Register = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="label-paper"
               >
                 密码
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock size={20} className="text-gray-400" />
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Lock size={20} strokeWidth={2} className="text-primary-500" />
                 </div>
                 <input
                   id="password"
@@ -191,18 +198,18 @@ const Register = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="请输入密码（至少6个字符）"
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cta focus:border-transparent transition-all duration-200"
+                  className="input-paper w-full pl-12 pr-12"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-neutral-secondary hover:text-primary-500 transition-colors duration-300"
                 >
                   {showPassword ? (
-                    <EyeOff size={20} className="text-gray-400 hover:text-gray-600" />
+                    <EyeOff size={20} strokeWidth={2} />
                   ) : (
-                    <Eye size={20} className="text-gray-400 hover:text-gray-600" />
+                    <Eye size={20} strokeWidth={2} />
                   )}
                 </button>
               </div>
@@ -212,13 +219,13 @@ const Register = () => {
             <div>
               <label
                 htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="label-paper"
               >
                 确认密码
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock size={20} className="text-gray-400" />
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Lock size={20} strokeWidth={2} className="text-primary-500" />
                 </div>
                 <input
                   id="confirmPassword"
@@ -227,18 +234,18 @@ const Register = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   placeholder="请再次输入密码"
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cta focus:border-transparent transition-all duration-200"
+                  className="input-paper w-full pl-12 pr-12"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-neutral-secondary hover:text-primary-500 transition-colors duration-300"
                 >
                   {showConfirmPassword ? (
-                    <EyeOff size={20} className="text-gray-400 hover:text-gray-600" />
+                    <EyeOff size={20} strokeWidth={2} />
                   ) : (
-                    <Eye size={20} className="text-gray-400 hover:text-gray-600" />
+                    <Eye size={20} strokeWidth={2} />
                   )}
                 </button>
               </div>
@@ -248,7 +255,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary-500 text-white py-3.5 rounded-xl hover:bg-primary-600 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-neu-sm hover:shadow-neu mt-6"
+              className="btn-paper-primary w-full py-3.5 mt-6 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -266,11 +273,11 @@ const Register = () => {
 
           {/* 登录链接 */}
           <div className="mt-6 text-center">
-            <p className="text-gray-600">
+            <p className="text-neutral-secondary text-sm">
               已有账号？{' '}
               <Link
                 to="/login"
-                className="text-cta hover:text-orange-600 font-medium"
+                className="text-primary-500 hover:text-gradient-sunset font-medium transition-all duration-300 hover:underline"
               >
                 立即登录
               </Link>
@@ -279,7 +286,7 @@ const Register = () => {
         </div>
 
         {/* 底部提示 */}
-        <p className="text-center text-gray-500 text-sm mt-8">
+        <p className="text-center text-neutral-secondary text-xs mt-6 font-display italic">
           注册即表示您同意我们的服务条款和隐私政策
         </p>
       </div>

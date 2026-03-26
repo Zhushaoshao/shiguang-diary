@@ -31,47 +31,50 @@ const DiaryCard = ({ diary }: DiaryCardProps) => {
   return (
     <article
       onClick={() => navigate(`/post/${diary.id}`)}
-      className="group cursor-pointer bg-neutral-card rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-1 border border-neutral-border"
+      className="card-paper group cursor-pointer overflow-hidden transition-all duration-500 hover:-translate-y-2"
     >
       {/* 封面图片 */}
       {coverImage && (
-        <div className="relative h-48 overflow-hidden bg-neutral-bg">
+        <div className="relative h-48 overflow-hidden bg-gradient-to-br from-neutral-border to-neutral-bg -m-6 mb-0">
           <img
             src={coverImage}
             alt={diary.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {/* 渐变遮罩 */}
+          <div className="absolute inset-0 bg-gradient-to-t from-neutral-card via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
+          {/* 墨水晕染效果 */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-sunset-lavender/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
       )}
 
       {/* 内容区域 */}
-      <div className="p-5">
-        {/* 标题 */}
-        <h2 className="text-xl font-semibold text-neutral-text mb-3 line-clamp-2 group-hover:text-primary-500 transition-colors duration-200">
+      <div className={coverImage ? 'p-6 pt-5' : 'p-6'}>
+        {/* 标题 - 衬线字体 */}
+        <h2 className="font-display text-xl font-semibold text-neutral-ink mb-3 line-clamp-2 group-hover:text-gradient-sunset transition-all duration-300">
           {diary.title}
         </h2>
 
-        {/* 内容预览 */}
-        <p className="text-sm text-neutral-secondary mb-4 line-clamp-3 leading-relaxed">
+        {/* 内容预览 - 优化排版 */}
+        <p className="text-sm text-neutral-secondary mb-4 line-clamp-3 leading-relaxed font-body">
           {diary.content}
         </p>
 
-        {/* 元信息 */}
-        <div className="flex items-center justify-between text-xs text-neutral-secondary pt-4 border-t border-neutral-border">
+        {/* 元信息 - 优化图标和间距 */}
+        <div className="flex items-center justify-between text-xs text-neutral-secondary pt-4 border-t border-neutral-border/50">
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5">
-              <User size={14} strokeWidth={2} className="text-primary-500" />
+            <div className="flex items-center gap-1.5 group/item">
+              <User size={14} strokeWidth={2} className="text-primary-500 group-hover/item:scale-110 transition-transform duration-300" />
               <span className="font-medium">{diary.username}</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <Calendar size={14} strokeWidth={2} className="text-primary-500" />
+            <div className="flex items-center gap-1.5 group/item">
+              <Calendar size={14} strokeWidth={2} className="text-sunset-amber group-hover/item:scale-110 transition-transform duration-300" />
               <span>{formatDate(diary.created_at)}</span>
             </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Eye size={14} strokeWidth={2} className="text-primary-500" />
+          <div className="flex items-center gap-1.5 group/item">
+            <Eye size={14} strokeWidth={2} className="text-neutral-secondary/60 group-hover/item:scale-110 transition-transform duration-300" />
             <span>{diary.views}</span>
           </div>
         </div>

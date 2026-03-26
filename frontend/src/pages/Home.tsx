@@ -114,17 +114,17 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-neutral-bg">
-      {/* 头部区域 - 新拟态风格 */}
-      <header className="bg-neutral-card shadow-neu sticky top-0 z-10 backdrop-blur-md bg-opacity-95">
+      {/* 头部区域 - Editorial Magazine 风格 */}
+      <header className="glass-paper sticky top-0 z-10 border-b border-neutral-border/30 animate-slide-down">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* 顶部导航栏 */}
           <div className="flex items-center justify-between py-4">
             {/* Logo 和标题 */}
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shadow-neu-sm">
-                <span className="text-white text-xl font-bold">拾</span>
+            <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/')}>
+              <div className="w-12 h-12 rounded-xl bg-gradient-sunset flex items-center justify-center shadow-paper-sm group-hover:shadow-glow transition-all duration-500 group-hover:rotate-6">
+                <span className="text-white text-xl font-display font-bold">拾</span>
               </div>
-              <h1 className="text-2xl font-bold text-neutral-text">拾光日记</h1>
+              <h1 className="text-2xl font-display font-bold text-gradient-sunset">拾光日记</h1>
             </div>
 
             {/* 操作按钮 */}
@@ -134,7 +134,7 @@ const Home = () => {
                   {/* 写日记按钮 */}
                   <button
                     onClick={() => navigate('/write')}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-white rounded-xl font-medium shadow-neu-sm hover:shadow-neu hover:bg-primary-600 transition-all duration-200"
+                    className="btn-paper-primary flex items-center gap-2"
                   >
                     <PenSquare size={18} strokeWidth={2} />
                     <span className="hidden sm:inline">写日记</span>
@@ -143,7 +143,7 @@ const Home = () => {
                   {/* 多篇导入按钮 */}
                   <button
                     onClick={() => navigate('/batch-import')}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-neutral-card border-2 border-primary-500 text-primary-500 rounded-xl font-medium shadow-card hover:shadow-card-hover hover:bg-primary-50 transition-all duration-200"
+                    className="btn-paper border-2 border-primary-500 text-primary-500 hover:bg-primary-50 flex items-center gap-2"
                   >
                     <FileStack size={18} strokeWidth={2} />
                     <span className="hidden sm:inline">多篇导入</span>
@@ -152,7 +152,7 @@ const Home = () => {
                   {/* 个人中心 */}
                   <button
                     onClick={() => navigate('/profile')}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-neutral-card border border-neutral-border text-neutral-text rounded-xl font-medium shadow-card hover:shadow-card-hover transition-all duration-200"
+                    className="btn-paper flex items-center gap-2"
                   >
                     <User size={18} strokeWidth={2} />
                     <span className="hidden sm:inline">{user?.username}</span>
@@ -161,7 +161,7 @@ const Home = () => {
                   {/* 退出按钮 */}
                   <button
                     onClick={logout}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-neutral-card border border-neutral-border text-neutral-secondary rounded-xl font-medium shadow-card hover:shadow-card-hover hover:text-error transition-all duration-200"
+                    className="btn-paper text-neutral-secondary hover:text-error hover:border-error flex items-center gap-2"
                   >
                     <LogOut size={18} strokeWidth={2} />
                     <span className="hidden sm:inline">退出</span>
@@ -172,7 +172,7 @@ const Home = () => {
                   {/* 登录按钮 */}
                   <button
                     onClick={() => navigate('/login')}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-neutral-card border-2 border-primary-500 text-primary-500 rounded-xl font-medium shadow-card hover:shadow-card-hover hover:bg-primary-50 transition-all duration-200"
+                    className="btn-paper border-2 border-primary-500 text-primary-500 hover:bg-primary-50 flex items-center gap-2"
                   >
                     <LogIn size={18} strokeWidth={2} />
                     <span>登录</span>
@@ -181,7 +181,7 @@ const Home = () => {
                   {/* 注册按钮 */}
                   <button
                     onClick={() => navigate('/register')}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-white rounded-xl font-medium shadow-neu-sm hover:shadow-neu hover:bg-primary-600 transition-all duration-200"
+                    className="btn-paper-primary flex items-center gap-2"
                   >
                     <UserPlus size={18} strokeWidth={2} />
                     <span>注册</span>
@@ -192,7 +192,7 @@ const Home = () => {
           </div>
 
           {/* 搜索栏 */}
-          <div className="py-5 border-t border-neutral-border">
+          <div className="py-5 border-t border-neutral-border/30">
             <SearchBar onSearch={handleSearch} />
           </div>
         </div>
@@ -202,17 +202,22 @@ const Home = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 错误提示 */}
         {error && (
-          <div className="bg-red-50 border-2 border-red-200 text-red-700 px-5 py-4 rounded-xl mb-6 shadow-card animate-slide-up">
-            <p className="font-semibold text-base">加载失败</p>
+          <div className="card-paper bg-red-50 border-2 border-error/30 text-error px-5 py-4 mb-6 animate-slide-up">
+            <p className="font-display font-semibold text-base">加载失败</p>
             <p className="text-sm mt-1">{error}</p>
           </div>
         )}
 
-        {/* 日记列表 */}
+        {/* 日记列表 - 错落揭示动画 */}
         {diaries.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
-            {diaries.map((diary) => (
-              <DiaryCard key={diary.id} diary={diary} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {diaries.map((diary, index) => (
+              <div
+                key={diary.id}
+                className={`animate-fade-in stagger-${Math.min(index % 5 + 1, 5)}`}
+              >
+                <DiaryCard diary={diary} />
+              </div>
             ))}
           </div>
         ) : (
@@ -238,20 +243,23 @@ const Home = () => {
 
         {/* 没有更多数据提示 */}
         {!hasMore && diaries.length > 0 && (
-          <p className="text-center text-neutral-secondary py-8 text-sm">
-            已经到底了，没有更多日记了
-          </p>
+          <div className="text-center py-8">
+            <div className="divider-ink"></div>
+            <p className="text-neutral-secondary text-sm font-display italic mt-4">
+              已经到底了，没有更多日记了
+            </p>
+          </div>
         )}
       </main>
 
-      {/* 回到顶部按钮 - 新拟态风格 */}
+      {/* 回到顶部按钮 - 纸质风格 */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 w-14 h-14 bg-neutral-card rounded-xl shadow-neu hover:shadow-neu-lg transition-all duration-200 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 animate-scale-in"
+          className="fixed bottom-8 right-8 w-14 h-14 btn-paper-primary rounded-xl shadow-paper-lg hover:shadow-glow transition-all duration-300 flex items-center justify-center focus:outline-none animate-scale-in float-effect"
           aria-label="回到顶部"
         >
-          <ChevronUp size={24} strokeWidth={2} className="text-primary-500" />
+          <ChevronUp size={24} strokeWidth={2.5} className="text-white" />
         </button>
       )}
     </div>

@@ -199,7 +199,7 @@ const WriteDiary = () => {
 
   if (loadingDiary) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-neutral-bg">
         <LoadingSpinner />
       </div>
     );
@@ -207,20 +207,20 @@ const WriteDiary = () => {
 
   return (
     <div className="min-h-screen bg-neutral-bg">
-      {/* 顶部导航栏 - 新拟态风格 */}
-      <header className="bg-neutral-card shadow-neu sticky top-0 z-20 backdrop-blur-md bg-opacity-95">
+      {/* 顶部导航栏 - 玻璃纸质效果 */}
+      <header className="glass-paper sticky top-0 z-20 border-b border-neutral-border/30 animate-slide-down">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => navigate(-1)}
-                className="flex items-center gap-2 text-neutral-secondary hover:text-primary-500 transition-colors duration-200"
+                className="flex items-center gap-2 text-neutral-secondary hover:text-primary-500 transition-all duration-300 font-medium"
                 aria-label="返回"
               >
                 <ArrowLeft size={20} strokeWidth={2} />
-                <span className="font-medium">返回</span>
+                <span>返回</span>
               </button>
-              <h1 className="text-2xl font-semibold text-neutral-text">
+              <h1 className="text-2xl font-display font-semibold text-neutral-ink">
                 {isEditMode ? '编辑日记' : '写日记'}
               </h1>
             </div>
@@ -230,7 +230,7 @@ const WriteDiary = () => {
               <button
                 type="button"
                 onClick={() => setShowPreview(!showPreview)}
-                className="lg:hidden flex items-center gap-2 px-4 py-2.5 bg-neutral-card border border-neutral-border text-neutral-text rounded-xl font-medium shadow-card hover:shadow-card-hover transition-all duration-200"
+                className="lg:hidden btn-paper flex items-center gap-2"
               >
                 {showPreview ? (
                   <>
@@ -249,7 +249,7 @@ const WriteDiary = () => {
               <button
                 onClick={handleSubmit}
                 disabled={saving}
-                className="flex items-center gap-2 px-6 py-2.5 bg-primary-500 text-white rounded-xl font-medium shadow-neu-sm hover:shadow-neu hover:bg-primary-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-paper-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? (
                   <>
@@ -272,15 +272,15 @@ const WriteDiary = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* 左侧编辑器 */}
-          <div className={`${showPreview ? 'hidden lg:block' : 'block'}`}>
+          <div className={`${showPreview ? 'hidden lg:block' : 'block'} animate-fade-in`}>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* 标题输入 */}
               <div>
                 <label
                   htmlFor="title"
-                  className="block text-sm font-medium text-neutral-text mb-2"
+                  className="label-paper"
                 >
-                  标题 <span className="text-red-500">*</span>
+                  标题 <span className="text-error">*</span>
                 </label>
                 <input
                   id="title"
@@ -288,7 +288,7 @@ const WriteDiary = () => {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="给你的日记起个标题..."
-                  className="input-neu w-full text-lg font-heading"
+                  className="input-paper w-full text-lg font-display"
                   required
                 />
               </div>
@@ -317,9 +317,9 @@ const WriteDiary = () => {
               <div>
                 <label
                   htmlFor="content"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="label-paper"
                 >
-                  内容 <span className="text-red-500">*</span>
+                  内容 <span className="text-error">*</span>
                 </label>
                 <textarea
                   id="content"
@@ -327,7 +327,7 @@ const WriteDiary = () => {
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="记录你的生活点滴..."
                   rows={12}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 resize-none"
+                  className="textarea-paper w-full font-display"
                   required
                 />
               </div>
@@ -366,17 +366,25 @@ const WriteDiary = () => {
           </div>
 
           {/* 右侧预览 */}
-          <div className={`${showPreview ? 'block' : 'hidden lg:block'}`}>
-            <DiaryPreview
-              title={title}
-              content={content}
-              cover={cover[0] || null}
-              images={images}
-              video={video}
-              existingCover={existingCover}
-              existingImages={existingImages}
-              existingVideos={existingVideos}
-            />
+          <div className={`${showPreview ? 'block' : 'hidden lg:block'} animate-fade-in stagger-1`}>
+            <div className="sticky top-24">
+              <div className="card-paper p-6">
+                <h3 className="font-display text-lg font-semibold text-neutral-ink mb-4 flex items-center gap-2">
+                  <Eye size={20} className="text-primary-500" />
+                  实时预览
+                </h3>
+                <DiaryPreview
+                  title={title}
+                  content={content}
+                  cover={cover[0] || null}
+                  images={images}
+                  video={video}
+                  existingCover={existingCover}
+                  existingImages={existingImages}
+                  existingVideos={existingVideos}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </main>

@@ -58,32 +58,38 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-bg flex items-center justify-center p-4">
-      <div className="max-w-md w-full animate-fade-in">
+    <div className="min-h-screen bg-neutral-bg flex items-center justify-center p-4 relative overflow-hidden">
+      {/* 背景装饰 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-64 h-64 bg-sunset-amber/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-sunset-lavender/10 rounded-full blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
+      </div>
+
+      <div className="max-w-md w-full animate-fade-in relative z-10">
         {/* Logo 和标题 */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl shadow-neu mb-4">
-            <span className="text-white text-2xl font-bold">拾</span>
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-sunset rounded-2xl shadow-paper-lg mb-4 animate-scale-in hover:rotate-6 transition-transform duration-500 cursor-pointer">
+            <span className="text-white text-3xl font-display font-bold">拾</span>
           </div>
-          <h1 className="text-4xl font-bold text-neutral-text mb-2">拾光日记</h1>
-          <p className="text-neutral-secondary">记录生活的每一刻</p>
+          <h1 className="text-4xl font-display font-bold text-gradient-sunset mb-2">拾光日记</h1>
+          <p className="text-neutral-secondary font-display italic">记录生活的每一刻</p>
         </div>
 
         {/* 登录表单 */}
-        <div className="bg-neutral-card rounded-xl shadow-card p-8 border border-neutral-border">
+        <div className="diary-paper-card p-8 animate-slide-up">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-14 h-14 bg-accent-yellow rounded-xl flex items-center justify-center shadow-neu-sm">
-              <LogIn size={28} strokeWidth={2} className="text-primary-500" />
+            <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-xl flex items-center justify-center shadow-paper">
+              <LogIn size={32} strokeWidth={2} className="text-primary-500" />
             </div>
           </div>
 
-          <h2 className="text-2xl font-semibold text-center text-neutral-text mb-6">
+          <h2 className="text-2xl font-display font-semibold text-center text-neutral-ink mb-6">
             登录账号
           </h2>
 
           {/* 错误提示 */}
           {error && (
-            <div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 animate-slide-up">
+            <div className="card-paper bg-error/10 border-2 border-error/30 text-error px-4 py-3 mb-6 animate-slide-up">
               <p className="text-sm font-medium">{error}</p>
             </div>
           )}
@@ -93,7 +99,7 @@ const Login = () => {
             <div>
               <label
                 htmlFor="username"
-                className="block text-sm font-medium text-neutral-text mb-2"
+                className="label-paper"
               >
                 用户名
               </label>
@@ -108,7 +114,7 @@ const Login = () => {
                   value={formData.username}
                   onChange={handleChange}
                   placeholder="请输入用户名"
-                  className="input-neu w-full pl-12 pr-4"
+                  className="input-paper w-full pl-12 pr-4"
                   required
                 />
               </div>
@@ -118,7 +124,7 @@ const Login = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-neutral-text mb-2"
+                className="label-paper"
               >
                 密码
               </label>
@@ -133,18 +139,18 @@ const Login = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="请输入密码"
-                  className="input-neu w-full pl-12 pr-12"
+                  className="input-paper w-full pl-12 pr-12"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-neutral-secondary hover:text-primary-500 transition-colors duration-300"
                 >
                   {showPassword ? (
-                    <EyeOff size={20} strokeWidth={2} className="text-neutral-secondary hover:text-primary-500 transition-colors" />
+                    <EyeOff size={20} strokeWidth={2} />
                   ) : (
-                    <Eye size={20} strokeWidth={2} className="text-neutral-secondary hover:text-primary-500 transition-colors" />
+                    <Eye size={20} strokeWidth={2} />
                   )}
                 </button>
               </div>
@@ -154,7 +160,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary-500 text-white py-3.5 rounded-xl hover:bg-primary-600 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-neu-sm hover:shadow-neu mt-6"
+              className="btn-paper-primary w-full py-3.5 mt-6 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -176,7 +182,7 @@ const Login = () => {
               还没有账号？{' '}
               <Link
                 to="/register"
-                className="text-primary-500 hover:text-primary-600 font-medium transition-colors"
+                className="text-primary-500 hover:text-gradient-sunset font-medium transition-all duration-300 hover:underline"
               >
                 立即注册
               </Link>
@@ -185,7 +191,7 @@ const Login = () => {
         </div>
 
         {/* 底部提示 */}
-        <p className="text-center text-neutral-secondary text-xs mt-6">
+        <p className="text-center text-neutral-secondary text-xs mt-6 font-display italic">
           登录即表示您同意我们的服务条款和隐私政策
         </p>
       </div>

@@ -40,15 +40,11 @@ const DiaryPreview = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm overflow-hidden h-full">
-      <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 z-10">
-        <h3 className="text-lg font-heading font-semibold text-text">预览</h3>
-      </div>
-
-      <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 200px)' }}>
+    <div className="bg-neutral-card rounded-xl shadow-paper overflow-hidden h-full border border-neutral-border">
+      <div className="p-6 overflow-y-auto scrollbar-paper" style={{ maxHeight: 'calc(100vh - 200px)' }}>
         {/* 封面图 */}
         {(cover || existingCover) && (
-          <div className="w-full h-64 rounded-lg overflow-hidden bg-gray-100 mb-6">
+          <div className="w-full h-64 rounded-lg overflow-hidden bg-gradient-to-br from-neutral-border to-neutral-bg mb-6">
             <img
               src={cover ? getPreviewUrl(cover) : getFileUrl(existingCover!)}
               alt="封面"
@@ -58,18 +54,18 @@ const DiaryPreview = ({
         )}
 
         {/* 标题 */}
-        <h1 className="text-4xl font-heading font-bold text-text mb-6">
+        <h1 className="font-display text-3xl font-bold text-neutral-ink mb-6">
           {title || '无标题'}
         </h1>
 
         {/* 元信息 */}
-        <div className="flex flex-wrap items-center gap-6 text-gray-600 pb-6 border-b border-gray-200 mb-6">
+        <div className="flex flex-wrap items-center gap-6 text-neutral-secondary pb-6 border-b border-neutral-border/50 mb-6">
           <div className="flex items-center gap-2">
-            <User size={18} className="text-primary" />
+            <User size={18} className="text-primary-500" />
             <span>我</span>
           </div>
           <div className="flex items-center gap-2">
-            <Calendar size={18} className="text-primary" />
+            <Calendar size={18} className="text-sunset-amber" />
             <span>{formatDate()}</span>
           </div>
         </div>

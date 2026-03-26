@@ -88,24 +88,24 @@ const BatchImport = () => {
   return (
     <div className="min-h-screen bg-neutral-bg">
       {/* 头部 */}
-      <header className="bg-neutral-card shadow-neu sticky top-0 z-10">
+      <header className="glass-paper sticky top-0 z-10 border-b border-neutral-border/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button
                 onClick={() => navigate('/')}
-                className="p-2 rounded-xl hover:bg-neutral-bg transition-all duration-200"
+                className="p-2 rounded-xl hover:bg-primary-50 text-neutral-secondary hover:text-primary-500 transition-all duration-300"
               >
                 <ArrowLeft size={24} />
               </button>
-              <h1 className="text-2xl font-bold text-neutral-text">多篇导入</h1>
+              <h1 className="text-2xl font-display font-bold text-neutral-ink">多篇导入</h1>
             </div>
 
             {diaries.length > 0 && (
               <div className="flex items-center gap-3">
                 <button
                   onClick={handleReset}
-                  className="flex items-center gap-2 px-4 py-2 bg-neutral-card border border-neutral-border text-neutral-secondary rounded-xl hover:shadow-card-hover transition-all duration-200"
+                  className="btn-paper flex items-center gap-2"
                 >
                   <X size={18} />
                   <span>重置</span>
@@ -113,7 +113,7 @@ const BatchImport = () => {
                 <button
                   onClick={handleSubmitAll}
                   disabled={submitting}
-                  className="flex items-center gap-2 px-5 py-2 bg-primary-500 text-white rounded-xl hover:bg-primary-600 shadow-neu-sm hover:shadow-neu transition-all duration-200 disabled:opacity-50"
+                  className="btn-paper-primary flex items-center gap-2 disabled:opacity-50"
                 >
                   {submitting ? (
                     <>
@@ -137,25 +137,25 @@ const BatchImport = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {diaries.length === 0 ? (
           /* 输入区域 */
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-neutral-card rounded-xl p-6 shadow-card">
+          <div className="max-w-4xl mx-auto animate-fade-in">
+            <div className="card-paper p-6">
               <div className="flex items-center gap-2 mb-4">
                 <FileText size={20} className="text-primary-500" />
-                <h2 className="text-lg font-semibold text-neutral-text">粘贴文本内容</h2>
+                <h2 className="text-lg font-display font-semibold text-neutral-ink">粘贴文本内容</h2>
               </div>
 
               <textarea
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 placeholder="请粘贴包含多篇日记的文本，系统会自动识别日期并拆分...&#10;&#10;支持格式示例：&#10;2026年03月26日 08:26&#10;今天天气不错...&#10;&#10;2026-3-27 10:30&#10;去了公园散步..."
-                className="w-full h-96 px-4 py-3 rounded-xl border-2 border-neutral-border focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-100 transition-all duration-200 resize-none"
+                className="textarea-paper w-full h-96 font-display scrollbar-paper"
               />
 
               <div className="mt-4 flex justify-end">
                 <button
                   onClick={handleAnalyze}
                   disabled={analyzing || !inputText.trim()}
-                  className="flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-xl hover:bg-primary-600 shadow-neu-sm hover:shadow-neu transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-paper-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {analyzing ? (
                     <>
@@ -174,18 +174,19 @@ const BatchImport = () => {
           </div>
         ) : (
           /* 分析结果 */
-          <div>
-            <div className="mb-6 bg-primary-50 border-2 border-primary-200 rounded-xl p-4">
+          <div className="animate-fade-in">
+            <div className="mb-6 card-paper bg-primary-50 border-2 border-primary-200 p-4">
               <p className="text-primary-700 font-medium">
                 已识别 {diaries.length} 篇日记，请核对后提交
               </p>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-6 max-h-[calc(100vh-300px)] overflow-y-auto scrollbar-paper pr-2">
               {diaries.map((diary, index) => (
                 <div
                   key={index}
-                  className="bg-neutral-card rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-200"
+                  className="card-paper p-6 hover:-translate-y-1 transition-all duration-300 animate-fade-in"
+                  style={{animationDelay: `${index * 0.1}s`}}
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
@@ -194,10 +195,10 @@ const BatchImport = () => {
                           type="text"
                           value={diary.title}
                           onChange={(e) => handleEdit(index, 'title', e.target.value)}
-                          className="w-full px-3 py-2 rounded-lg border-2 border-primary-300 focus:border-primary-500 focus:outline-none"
+                          className="input-paper w-full font-display"
                         />
                       ) : (
-                        <h3 className="text-lg font-semibold text-neutral-text">{diary.title}</h3>
+                        <h3 className="text-lg font-display font-semibold text-neutral-ink">{diary.title}</h3>
                       )}
                       <p className="text-sm text-neutral-secondary mt-1">
                         {diary.date.toLocaleString('zh-CN')}
@@ -207,13 +208,13 @@ const BatchImport = () => {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setEditingIndex(editingIndex === index ? null : index)}
-                        className="p-2 rounded-lg hover:bg-primary-50 text-primary-500 transition-all duration-200"
+                        className="p-2 rounded-lg hover:bg-primary-50 text-primary-500 hover:scale-110 transition-all duration-300"
                       >
                         <Edit2 size={18} />
                       </button>
                       <button
                         onClick={() => handleDelete(index)}
-                        className="p-2 rounded-lg hover:bg-red-50 text-red-500 transition-all duration-200"
+                        className="p-2 rounded-lg hover:bg-red-50 text-error hover:scale-110 transition-all duration-300"
                       >
                         <X size={18} />
                       </button>
@@ -224,10 +225,10 @@ const BatchImport = () => {
                     <textarea
                       value={diary.content}
                       onChange={(e) => handleEdit(index, 'content', e.target.value)}
-                      className="w-full h-32 px-3 py-2 rounded-lg border-2 border-primary-300 focus:border-primary-500 focus:outline-none resize-none"
+                      className="textarea-paper w-full h-32 font-display"
                     />
                   ) : (
-                    <p className="text-neutral-text whitespace-pre-wrap">{diary.content}</p>
+                    <p className="text-neutral-text whitespace-pre-wrap font-display leading-relaxed">{diary.content}</p>
                   )}
                 </div>
               ))}

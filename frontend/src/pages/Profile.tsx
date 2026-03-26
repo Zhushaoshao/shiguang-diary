@@ -81,17 +81,17 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-neutral-bg">
       {/* 头部导航 */}
-      <header className="bg-neutral-card shadow-neu sticky top-0 z-10 backdrop-blur-md bg-opacity-95">
+      <header className="glass-paper sticky top-0 z-10 border-b border-neutral-border/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate(-1)}
-              className="flex items-center gap-2 text-neutral-secondary hover:text-primary-500 transition-colors duration-200"
+              className="flex items-center gap-2 text-neutral-secondary hover:text-primary-500 transition-all duration-300 font-medium"
             >
               <ArrowLeft size={20} strokeWidth={2} />
-              <span className="font-medium">返回</span>
+              <span>返回</span>
             </button>
-            <h1 className="text-2xl font-semibold text-neutral-text">个人中心</h1>
+            <h1 className="text-2xl font-display font-semibold text-neutral-ink">个人中心</h1>
           </div>
         </div>
       </header>
@@ -100,18 +100,18 @@ const Profile = () => {
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6 animate-fade-in">
           {/* 个人信息卡片 */}
-          <div className="bg-neutral-card rounded-xl shadow-card p-6 border border-neutral-border">
-            <h2 className="text-xl font-semibold text-neutral-text mb-6">个人信息</h2>
+          <div className="card-paper p-6">
+            <h2 className="text-xl font-display font-semibold text-neutral-ink mb-6">个人信息</h2>
 
             <div className="flex items-center gap-6">
               {/* 头像 */}
               <div className="relative group">
-                <div className="w-24 h-24 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center shadow-neu">
-                  <span className="text-white text-3xl font-bold">
+                <div className="w-24 h-24 bg-gradient-sunset rounded-xl flex items-center justify-center shadow-paper">
+                  <span className="text-white text-3xl font-display font-bold">
                     {user.username.charAt(0).toUpperCase()}
                   </span>
                 </div>
-                <div className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer">
+                <div className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
                   <Camera size={24} strokeWidth={2} className="text-white" />
                 </div>
               </div>
@@ -121,11 +121,11 @@ const Profile = () => {
                 <div className="space-y-3">
                   <div>
                     <label className="text-sm text-neutral-secondary">用户名</label>
-                    <p className="text-lg font-medium text-neutral-text">{user.username}</p>
+                    <p className="text-lg font-display font-medium text-neutral-ink">{user.username}</p>
                   </div>
                   <div>
                     <label className="text-sm text-neutral-secondary">邮箱</label>
-                    <p className="text-lg font-medium text-neutral-text">{user.email}</p>
+                    <p className="text-lg font-display font-medium text-neutral-ink">{user.email}</p>
                   </div>
                 </div>
               </div>
@@ -133,22 +133,22 @@ const Profile = () => {
           </div>
 
           {/* 修改密码卡片 */}
-          <div className="bg-neutral-card rounded-xl shadow-card p-6 border border-neutral-border">
-            <h2 className="text-xl font-semibold text-neutral-text mb-6 flex items-center gap-2">
+          <div className="card-paper p-6">
+            <h2 className="text-xl font-display font-semibold text-neutral-ink mb-6 flex items-center gap-2">
               <Lock size={20} strokeWidth={2} className="text-primary-500" />
               修改密码
             </h2>
 
             {/* 成功提示 */}
             {success && (
-              <div className="bg-green-50 border-2 border-green-200 text-green-700 px-4 py-3 rounded-xl mb-6 animate-slide-up">
+              <div className="card-paper bg-success/10 border-2 border-success/30 text-success px-4 py-3 mb-6 animate-slide-up">
                 <p className="text-sm font-medium">{success}</p>
               </div>
             )}
 
             {/* 错误提示 */}
             {error && (
-              <div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 animate-slide-up">
+              <div className="card-paper bg-error/10 border-2 border-error/30 text-error px-4 py-3 mb-6 animate-slide-up">
                 <p className="text-sm font-medium">{error}</p>
               </div>
             )}
@@ -156,7 +156,7 @@ const Profile = () => {
             <form onSubmit={handlePasswordChange} className="space-y-5">
               {/* 当前密码 */}
               <div>
-                <label htmlFor="oldPassword" className="block text-sm font-medium text-neutral-text mb-2">
+                <label htmlFor="oldPassword" className="label-paper">
                   当前密码
                 </label>
                 <input
@@ -165,14 +165,14 @@ const Profile = () => {
                   value={passwordForm.oldPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, oldPassword: e.target.value })}
                   placeholder="请输入当前密码"
-                  className="input-neu w-full"
+                  className="input-paper w-full"
                   required
                 />
               </div>
 
               {/* 新密码 */}
               <div>
-                <label htmlFor="newPassword" className="block text-sm font-medium text-neutral-text mb-2">
+                <label htmlFor="newPassword" className="label-paper">
                   新密码
                 </label>
                 <input
@@ -181,7 +181,7 @@ const Profile = () => {
                   value={passwordForm.newPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
                   placeholder="请输入新密码（至少6个字符）"
-                  className="input-neu w-full"
+                  className="input-paper w-full"
                   required
                   minLength={6}
                 />
@@ -189,7 +189,7 @@ const Profile = () => {
 
               {/* 确认密码 */}
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-neutral-text mb-2">
+                <label htmlFor="confirmPassword" className="label-paper">
                   确认新密码
                 </label>
                 <input
@@ -198,7 +198,7 @@ const Profile = () => {
                   value={passwordForm.confirmPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
                   placeholder="请再次输入新密码"
-                  className="input-neu w-full"
+                  className="input-paper w-full"
                   required
                 />
               </div>
@@ -207,7 +207,7 @@ const Profile = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-primary-500 text-white py-3.5 rounded-xl hover:bg-primary-600 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-neu-sm hover:shadow-neu mt-6"
+                className="btn-paper-primary w-full py-3.5 mt-6 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>

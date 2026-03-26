@@ -107,14 +107,14 @@ const DiaryDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* 顶部导航栏 */}
-      <header className="bg-white shadow-sm sticky top-0 z-10">
+    <div className="min-h-screen bg-neutral-bg">
+      {/* 顶部导航栏 - 玻璃纸质效果 */}
+      <header className="glass-paper sticky top-0 z-10 border-b border-neutral-border/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <button
               onClick={() => navigate(-1)}
-              className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors duration-200"
+              className="flex items-center gap-2 text-neutral-secondary hover:text-primary-500 transition-all duration-300 font-medium"
               aria-label="返回"
             >
               <ArrowLeft size={20} />
@@ -126,7 +126,7 @@ const DiaryDetail = () => {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => navigate(`/write?id=${diary.id}`)}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-neutral-card border-2 border-primary-500 text-primary-500 rounded-xl font-medium shadow-card hover:shadow-card-hover hover:bg-primary-50 transition-all duration-200"
+                  className="btn-paper border-2 border-primary-500 text-primary-500 hover:bg-primary-50"
                   aria-label="编辑日记"
                 >
                   <Edit size={18} strokeWidth={2} />
@@ -134,7 +134,7 @@ const DiaryDetail = () => {
                 </button>
                 <button
                   onClick={() => setShowDeleteModal(true)}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-neutral-card border-2 border-red-500 text-red-500 rounded-xl font-medium shadow-card hover:shadow-card-hover hover:bg-red-50 transition-all duration-200"
+                  className="btn-paper border-2 border-error text-error hover:bg-red-50"
                   aria-label="删除日记"
                 >
                   <Trash2 size={18} strokeWidth={2} />
@@ -148,42 +148,45 @@ const DiaryDetail = () => {
 
       {/* 主内容区域 */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <article className="bg-white rounded-2xl shadow-sm overflow-hidden">
+        {/* 日记卡片 - 增强纸质质感 */}
+        <article className="diary-paper-card rounded-2xl overflow-hidden animate-fade-in">
           {/* 封面图 */}
           {diary.cover && (
-            <div className="w-full h-96 overflow-hidden bg-gray-100">
+            <div className="w-full h-96 overflow-hidden bg-gradient-to-br from-neutral-border to-neutral-bg relative">
               <img
                 src={getImageUrl(diary.cover)}
                 alt={diary.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
               />
+              {/* 封面渐变遮罩 */}
+              <div className="absolute inset-0 bg-gradient-to-t from-neutral-card/80 via-transparent to-transparent pointer-events-none"></div>
             </div>
           )}
 
-          <div className="p-8">
-            {/* 标题 */}
-            <h1 className="text-4xl md:text-5xl font-heading font-bold text-text mb-6">
+          <div className="p-8 md:p-12">
+            {/* 标题 - 使用衬线字体 */}
+            <h1 className="font-display text-4xl md:text-5xl font-bold text-neutral-ink mb-6 leading-tight animate-slide-up">
               {diary.title}
             </h1>
 
-            {/* 元信息 */}
-            <div className="flex flex-wrap items-center gap-6 text-gray-600 pb-6 border-b border-gray-200">
-              <div className="flex items-center gap-2">
-                <User size={18} className="text-primary" />
-                <span>{diary.username}</span>
+            {/* 元信息 - 优化样式 */}
+            <div className="flex flex-wrap items-center gap-6 text-neutral-secondary pb-6 mb-8 border-b border-neutral-border/50 animate-slide-up stagger-1">
+              <div className="flex items-center gap-2 group">
+                <User size={18} className="text-primary-500 group-hover:scale-110 transition-transform duration-300" />
+                <span className="font-medium">{diary.username}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Calendar size={18} className="text-primary" />
+              <div className="flex items-center gap-2 group">
+                <Calendar size={18} className="text-sunset-amber group-hover:scale-110 transition-transform duration-300" />
                 <span>{formatDate(diary.created_at)}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Eye size={18} className="text-gray-400" />
+              <div className="flex items-center gap-2 group">
+                <Eye size={18} className="text-neutral-secondary/60 group-hover:scale-110 transition-transform duration-300" />
                 <span>{diary.views} 次浏览</span>
               </div>
             </div>
 
-            {/* 正文内容 */}
-            <div className="prose prose-lg max-w-none mt-8">
+            {/* 正文内容 - 优化排版 */}
+            <div className="prose prose-lg max-w-none mt-8 animate-slide-up stagger-2">
               <DiaryContent content={diary.content} />
             </div>
 

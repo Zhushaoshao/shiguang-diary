@@ -205,6 +205,71 @@
     @apply -translate-y-1;
   }
 
+  /* 日记专用纸质卡片 - 增强质感 */
+  .diary-paper-card {
+    @apply bg-neutral-card;
+    @apply shadow-paper-xl;
+    @apply transition-all duration-500;
+    @apply border-2 border-neutral-border/40;
+    @apply relative;
+
+    /* 多层纸质纹理叠加 */
+    background-image:
+      /* 顶层：微妙的渐变 */
+      linear-gradient(135deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 251, 247, 0.98) 25%,
+        rgba(255, 248, 240, 1) 50%,
+        rgba(255, 251, 247, 0.98) 75%,
+        rgba(255, 255, 255, 0.95) 100%
+      ),
+      /* 中层：细腻噪点 */
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(230, 126, 34, 0.01) 2px,
+        rgba(230, 126, 34, 0.01) 4px
+      ),
+      /* 底层：纸质纹理 */
+      var(--texture-paper);
+
+    /* 纸张边缘效果 */
+    box-shadow:
+      0 12px 32px rgba(230, 126, 34, 0.15),
+      0 6px 16px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8),
+      inset 0 -1px 0 rgba(230, 126, 34, 0.05);
+  }
+
+  .diary-paper-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    /* 纸张光泽效果 */
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      transparent 30%,
+      transparent 70%,
+      rgba(230, 126, 34, 0.03) 100%
+    );
+    pointer-events: none;
+  }
+
+  .diary-paper-card:hover {
+    @apply -translate-y-2;
+    box-shadow:
+      0 16px 40px rgba(230, 126, 34, 0.2),
+      0 8px 20px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(230, 126, 34, 0.08);
+  }
+
   /* 墨水卡片 - 深色版本 */
   .card-ink {
     @apply bg-neutral-ink text-neutral-bg rounded-xl p-6;

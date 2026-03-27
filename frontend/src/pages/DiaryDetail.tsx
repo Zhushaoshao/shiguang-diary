@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Calendar, Eye, User, Edit, Trash2, ArrowLeft, Image as ImageIcon } from 'lucide-react';
 import { getDiaryById, deleteDiary } from '../services/diaryService';
@@ -20,12 +20,14 @@ const DiaryDetail = () => {
   const [deleting, setDeleting] = useState(false);
   const [showImageViewer, setShowImageViewer] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const loadedDiaryIdRef = useRef<string | null>(null);
 
   // 加载日记详情
   useEffect(() => {
     const loadDiary = async () => {
-      if (!id) return;
+      if (!id || loadedDiaryIdRef.current === id) return;
 
+      loadedDiaryIdRef.current = id;
       setLoading(true);
       setError(null);
 
@@ -35,6 +37,7 @@ const DiaryDetail = () => {
       } catch (err: any) {
         console.error('加载日记失败:', err);
         setError(err.response?.data?.message || '加载失败，请稍后重试');
+        loadedDiaryIdRef.current = null;
       } finally {
         setLoading(false);
       }

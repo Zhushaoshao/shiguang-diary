@@ -8,6 +8,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { useToastStore } from '../store/toastStore';
 import ImageViewer from '../components/ImageViewer';
 import DiaryContent from '../components/DiaryContent';
+import MediaImage from '../components/MediaImage';
 
 const DiaryDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -99,17 +100,28 @@ const DiaryDetail = () => {
 
   if (error || !diary) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <div className="text-center">
-          <h2 className="text-2xl font-heading text-gray-700 mb-4">
+      <div className="min-h-screen bg-neutral-bg flex items-center justify-center p-4">
+        <div className="card-paper max-w-md w-full text-center">
+          <h2 className="text-2xl font-display text-neutral-ink mb-3">
             {error || '日记不存在'}
           </h2>
-          <button
-            onClick={() => navigate('/')}
-            className="px-6 py-2 bg-primary text-white rounded-full hover:bg-secondary transition-colors duration-200"
-          >
-            返回首页
-          </button>
+          <p className="text-neutral-secondary text-sm mb-6">
+            你可以返回首页，或立即重试当前内容加载。
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <button
+              onClick={() => window.location.reload()}
+              className="btn-paper-primary"
+            >
+              重试加载
+            </button>
+            <button
+              onClick={() => navigate('/')}
+              className="btn-paper"
+            >
+              返回首页
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -161,11 +173,13 @@ const DiaryDetail = () => {
         <article className="diary-paper-card rounded-2xl overflow-hidden animate-fade-in">
           {/* 封面图 */}
           {diary.cover && (
-            <div className="w-full h-96 overflow-hidden bg-gradient-to-br from-neutral-border to-neutral-bg relative">
-              <img
+            <div className="w-full h-72 sm:h-80 md:h-96 overflow-hidden bg-gradient-to-br from-neutral-border to-neutral-bg relative">
+              <MediaImage
                 src={getImageUrl(diary.cover)}
                 alt={diary.title}
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                loading="eager"
+                className="w-full h-full"
+                imgClassName="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
               />
               {/* 封面渐变遮罩 */}
               <div className="absolute inset-0 bg-gradient-to-t from-neutral-card/80 via-transparent to-transparent pointer-events-none"></div>
@@ -212,13 +226,14 @@ const DiaryDetail = () => {
                       }}
                       className="relative aspect-square rounded-lg overflow-hidden bg-neutral-bg group cursor-pointer shadow-card hover:shadow-card-hover transition-all duration-300"
                     >
-                      <img
+                      <MediaImage
                         src={getImageUrl(image)}
                         alt={`图片 ${index + 1}`}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full"
+                        imgClassName="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 pointer-events-none" />
                     </div>
                   ))}
                 </div>

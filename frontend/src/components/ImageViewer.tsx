@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import MediaImage from './MediaImage';
 
 interface ImageViewerProps {
   images: string[];
@@ -17,6 +18,17 @@ const ImageViewer = ({ images, initialIndex = 0, onClose }: ImageViewerProps) =>
   const goToNext = () => {
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
+
+  useEffect(() => {
+    const handleWindowKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') goToPrevious();
+      if (e.key === 'ArrowRight') goToNext();
+      if (e.key === 'Escape') onClose();
+    };
+
+    window.addEventListener('keydown', handleWindowKeyDown);
+    return () => window.removeEventListener('keydown', handleWindowKeyDown);
+  }, [images.length, onClose]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowLeft') goToPrevious();
@@ -53,13 +65,16 @@ const ImageViewer = ({ images, initialIndex = 0, onClose }: ImageViewerProps) =>
 
       {/* 主图片 */}
       <div
-        className="relative max-w-7xl max-h-[90vh] mx-auto px-16"
+        className="relative w-full max-w-7xl max-h-[90vh] mx-auto px-4 sm:px-16"
         onClick={(e) => e.stopPropagation()}
       >
-        <img
+        <MediaImage
+          key={images[currentIndex]}
           src={getImageUrl(images[currentIndex])}
           alt={`图片 ${currentIndex + 1}`}
-          className="max-w-full max-h-[90vh] object-contain rounded-lg"
+          loading="eager"
+          className="mx-auto max-w-full max-h-[90vh] rounded-lg"
+          imgClassName="max-w-full max-h-[90vh] object-contain rounded-lg"
         />
       </div>
 
@@ -106,10 +121,11 @@ const ImageViewer = ({ images, initialIndex = 0, onClose }: ImageViewerProps) =>
               }`}
               aria-label={`查看图片 ${index + 1}`}
             >
-              <img
+              <MediaImage
                 src={getImageUrl(image)}
                 alt={`缩略图 ${index + 1}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full"
+                imgClassName="w-full h-full object-cover"
               />
             </button>
           ))}

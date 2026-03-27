@@ -80,7 +80,7 @@ const Login = () => {
       <div className="max-w-md w-full animate-fade-in relative z-10">
         {/* Logo 和标题 */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-sunset rounded-2xl shadow-paper-lg mb-4 animate-scale-in hover:rotate-6 transition-transform duration-500 cursor-pointer">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-sunset rounded-xl shadow-paper-lg mb-4 animate-scale-in hover:rotate-6 transition-transform duration-500 cursor-pointer">
             <span className="text-white text-3xl font-display font-bold">拾</span>
           </div>
           <h1 className="text-4xl font-display font-bold text-gradient-sunset mb-2">拾光日记</h1>
@@ -90,7 +90,7 @@ const Login = () => {
         {/* 登录表单 */}
         <div className="diary-paper-card p-6 sm:p-8 animate-slide-up">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-xl flex items-center justify-center shadow-paper">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-lg flex items-center justify-center shadow-paper">
               <DoorOpen size={32} strokeWidth={2} className="text-primary-500" />
             </div>
           </div>

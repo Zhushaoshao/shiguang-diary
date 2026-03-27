@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Calendar, Eye, User, Edit, Trash2, ArrowLeft, Image as ImageIcon } from 'lucide-react';
+import { Calendar, Eye, User, Edit, Trash2, ArrowLeft } from 'lucide-react';
 import { getDiaryById, deleteDiary, incrementDiaryViews } from '../services/diaryService';
 import type { Diary } from '../services/diaryService';
 import { useAuthStore } from '../store/authStore';
@@ -173,7 +173,7 @@ const DiaryDetail = () => {
       {/* 主内容区域 */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 日记卡片 - 增强纸质质感 */}
-        <article className="diary-paper-card rounded-2xl overflow-hidden animate-fade-in">
+        <article className="diary-paper-card overflow-hidden animate-fade-in">
           {/* 封面图 */}
           {diary.cover && (
             <div className="w-full h-72 sm:h-80 md:h-96 overflow-hidden bg-gradient-to-br from-neutral-border to-neutral-bg relative">
@@ -284,7 +284,7 @@ const DiaryDetail = () => {
                         </video>
                         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-300 pointer-events-none" />
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                          <div className="w-12 h-12 bg-black/55 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                          <div className="w-12 h-12 bg-black/55 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
                             <svg className="w-6 h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
                               <path d="M8 5v14l11-7z" />
                             </svg>
@@ -338,7 +338,7 @@ const DiaryDetail = () => {
           onClick={() => !deleting && setShowDeleteModal(false)}
         >
           <div
-            className="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl"
+            className="bg-white rounded-xl p-6 max-w-md w-full shadow-xl"
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-labelledby="delete-dialog-title"

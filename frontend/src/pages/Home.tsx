@@ -134,7 +134,7 @@ const Home = () => {
           <div className="flex items-center justify-between py-4">
             {/* Logo 和标题 */}
             <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/')}>
-              <div className="w-12 h-12 rounded-xl bg-gradient-sunset flex items-center justify-center shadow-paper-sm group-hover:shadow-glow transition-all duration-500 group-hover:rotate-6">
+              <div className="w-12 h-12 rounded-lg bg-gradient-sunset flex items-center justify-center shadow-paper-sm group-hover:shadow-glow transition-all duration-500 group-hover:rotate-6">
                 <span className="text-white text-xl font-display font-bold">拾</span>
               </div>
               <h1 className="text-2xl font-display font-bold text-gradient-sunset">拾光日记</h1>
@@ -282,7 +282,7 @@ const Home = () => {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 w-14 h-14 rounded-2xl bg-gradient-sunset text-white shadow-paper-xl hover:shadow-glow-lg hover:-translate-y-1 transition-all duration-300 flex items-center justify-center focus:outline-none animate-scale-in z-30 border border-white/20"
+          className="fixed bottom-8 right-8 w-14 h-14 rounded-xl bg-gradient-sunset text-white shadow-paper-xl hover:shadow-glow-lg hover:-translate-y-1 transition-all duration-300 flex items-center justify-center focus:outline-none animate-scale-in z-30 border border-white/20"
           aria-label="回到顶部"
         >
           <ChevronUp size={28} strokeWidth={3} className="text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.28)]" />

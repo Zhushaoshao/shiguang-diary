@@ -35,14 +35,14 @@ const VideoViewer = ({ src, title = '视频预览', onClose }: VideoViewerProps)
           </div>
           <button
             onClick={onClose}
-            className="w-11 h-11 flex-shrink-0 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors duration-200"
+            className="w-11 h-11 flex-shrink-0 flex items-center justify-center text-white hover:bg-white/10 rounded-lg transition-colors duration-200"
             aria-label="关闭视频查看器"
           >
             <X size={22} />
           </button>
         </div>
 
-        <div className="rounded-2xl overflow-hidden bg-black shadow-2xl border border-white/10">
+        <div className="rounded-xl overflow-hidden bg-black shadow-2xl border border-white/10">
           <video
             src={src}
             controls

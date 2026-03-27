@@ -34,11 +34,15 @@ const BatchImport = () => {
   // 编辑单篇日记
   const handleEdit = (index: number, field: 'title' | 'content' | 'date', value: string | Date) => {
     const updated = [...diaries];
+
     if (field === 'date' && value instanceof Date) {
       updated[index].date = value;
-    } else if (typeof value === 'string') {
-      updated[index][field] = value;
+    } else if (field === 'title' && typeof value === 'string') {
+      updated[index].title = value;
+    } else if (field === 'content' && typeof value === 'string') {
+      updated[index].content = value;
     }
+
     setDiaries(updated);
   };
 

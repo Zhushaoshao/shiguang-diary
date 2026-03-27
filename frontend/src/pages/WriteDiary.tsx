@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Save, Eye, EyeOff } from 'lucide-react';
 import { createDiary, updateDiary, getDiaryById } from '../services/diaryService';
@@ -31,19 +31,12 @@ const WriteDiary = () => {
   const [existingVideos, setExistingVideos] = useState<string[]>([]);
 
   // UI 状态
-  const [loading, setLoading] = useState(false);
   const [loadingDiary, setLoadingDiary] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [saving, setSaving] = useState(false);
 
   // 加载已有日记（编辑模式）
-  useEffect(() => {
-    if (isEditMode && diaryId) {
-      loadDiary(Number(diaryId));
-    }
-  }, [isEditMode, diaryId]);
-
-  const loadDiary = async (id: number) => {
+  const loadDiary = useCallback(async (id: number) => {
     setLoadingDiary(true);
     try {
       const data = await getDiaryById(id);
@@ -101,18 +94,23 @@ const WriteDiary = () => {
         images: diary.images,
         video: diary.video
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('加载日记失败:', error);
-      alert(error.response?.data?.message || '加载失败');
+      const message = error instanceof Error ? error.message : '加载失败';
+      alert(message);
       navigate('/');
     } finally {
       setLoadingDiary(false);
     }
-  };
+  }, [navigate, user?.id]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (isEditMode && diaryId) {
+      loadDiary(Number(diaryId));
+    }
+  }, [diaryId, isEditMode, loadDiary]);
 
+  const submitDiary = async () => {
     if (!title.trim()) {
       alert('请输入标题');
       return;
@@ -186,17 +184,19 @@ const WriteDiary = () => {
         showToast('日记发布成功', 'success');
         navigate(`/post/${result.diaryId}`, { replace: true });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('保存日记失败:', error);
-      console.error('错误响应:', error.response);
 
-      const errorMessage = error.response?.data?.message || error.message || '保存失败，请稍后重试';
-      const errorDetail = error.response?.data?.error || '';
-
-      showToast(`${errorMessage}${errorDetail ? `：${errorDetail}` : ''}`, 'error', 3200);
+      const errorMessage = error instanceof Error ? error.message : '保存失败，请稍后重试';
+      showToast(errorMessage, 'error', 3200);
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    await submitDiary();
   };
 
   if (loadingDiary) {
@@ -230,7 +230,7 @@ const WriteDiary = () => {
             <div className="hidden lg:flex items-center gap-3">
               {/* 桌面端发布/更新按钮 */}
               <button
-                onClick={handleSubmit}
+                onClick={submitDiary}
                 disabled={saving}
                 className="btn-paper-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -405,7 +405,7 @@ const WriteDiary = () => {
           </button>
           <button
             type="button"
-            onClick={handleSubmit}
+            onClick={submitDiary}
             disabled={saving}
             className="btn-paper-primary w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
           >

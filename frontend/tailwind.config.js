@@ -67,13 +67,13 @@ export default {
         bold: '700',
       },
       borderRadius: {
-        'sm': '0.5rem',
-        'DEFAULT': '0.75rem',
-        'md': '1rem',
-        'lg': '1.5rem',
-        'xl': '2rem',
-        '2xl': '2.5rem',
-        'full': '9999px',
+        sm: '0.375rem',
+        DEFAULT: '0.625rem',
+        md: '0.875rem',
+        lg: '1rem',
+        xl: '1.25rem',
+        '2xl': '1.5rem',
+        full: '9999px',
       },
       boxShadow: {
         // 柔和的纸质阴影

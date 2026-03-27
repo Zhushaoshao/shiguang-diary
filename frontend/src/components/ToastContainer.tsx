@@ -30,7 +30,7 @@ const ToastContainer = () => {
         return (
           <div
             key={toast.id}
-            className={`pointer-events-auto ml-auto w-full sm:w-[380px] rounded-2xl border shadow-paper-xl backdrop-blur-md animate-slide-up ${className}`}
+            className={`pointer-events-auto ml-auto w-full sm:w-[380px] rounded-xl border shadow-paper-xl backdrop-blur-md animate-slide-up ${className}`}
             role="status"
             aria-live="polite"
           >

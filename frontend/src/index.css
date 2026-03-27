@@ -157,7 +157,7 @@
 @layer components {
   /* 纸质按钮 - 主要 */
   .btn-paper {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-md font-medium transition-all duration-300;
     @apply shadow-paper hover:shadow-paper-lg active:shadow-inset;
     @apply bg-neutral-card text-neutral-text;
     @apply border border-neutral-border;
@@ -191,7 +191,7 @@
 
   /* 统一返回按钮 */
   .btn-back {
-    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap;
+    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-lg whitespace-nowrap;
     @apply text-neutral-secondary hover:text-primary-600;
     @apply bg-neutral-card/80 hover:bg-primary-50;
     @apply border border-neutral-border shadow-paper-sm hover:shadow-paper;
@@ -204,7 +204,7 @@
 
   /* 紧凑返回按钮 - 移动端优先 */
   .btn-back-compact {
-    @apply inline-flex items-center justify-center rounded-xl;
+    @apply inline-flex items-center justify-center rounded-lg;
     @apply w-11 h-11 p-0;
     @apply text-neutral-secondary hover:text-primary-600;
     @apply bg-neutral-card/80 hover:bg-primary-50;
@@ -215,7 +215,7 @@
   /* 图标热区按钮 */
   .icon-action-btn {
     @apply inline-flex items-center justify-center;
-    @apply w-11 h-11 rounded-xl;
+    @apply w-11 h-11 rounded-lg;
     @apply transition-all duration-300;
   }
 
@@ -223,7 +223,7 @@
 
   /* 纸质卡片 */
   .card-paper {
-    @apply bg-neutral-card rounded-xl p-6;
+    @apply bg-neutral-card rounded-lg p-6;
     @apply shadow-paper hover:shadow-paper-lg;
     @apply transition-all duration-500;
     @apply border border-neutral-border;
@@ -245,6 +245,7 @@
     @apply border-2 border-neutral-border/40;
     @apply relative;
 
+    border-radius: 1.25rem;
     /* 多层纸质纹理叠加 */
     background-image:
       /* 顶层：微妙的渐变 */
@@ -304,7 +305,7 @@
 
   /* 墨水卡片 - 深色版本 */
   .card-ink {
-    @apply bg-neutral-ink text-neutral-bg rounded-xl p-6;
+    @apply bg-neutral-ink text-neutral-bg rounded-lg p-6;
     @apply shadow-paper-xl;
     @apply transition-all duration-500;
     @apply border border-neutral-secondary;
@@ -312,7 +313,7 @@
 
   /* 输入框 - 纸质风格 */
   .input-paper {
-    @apply w-full px-4 py-3 rounded-lg;
+    @apply w-full px-4 py-3 rounded-md;
     @apply bg-white border-2 border-neutral-border;
     @apply text-neutral-text placeholder-neutral-secondary;
     @apply transition-all duration-300;

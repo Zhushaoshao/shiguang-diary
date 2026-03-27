@@ -43,7 +43,7 @@ const SearchBar = ({ onSearch, placeholder = '搜索日记...' }: SearchBarProps
             <button
               type="button"
               onClick={handleClear}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full bg-neutral-border/50 text-neutral-secondary hover:text-error hover:bg-error/10 hover:scale-110 transition-all duration-300"
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-md bg-neutral-border/50 text-neutral-secondary hover:text-error hover:bg-error/10 hover:scale-110 transition-all duration-300"
               aria-label="清除搜索"
             >
               <X size={16} strokeWidth={2.5} />

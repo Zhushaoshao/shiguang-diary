@@ -59,7 +59,7 @@ const ImageViewer = ({ images, initialIndex = 0, onClose }: ImageViewerProps) =>
           </div>
           <button
             onClick={onClose}
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-white hover:bg-white/10 transition-colors duration-200"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg text-white hover:bg-white/10 transition-colors duration-200"
             aria-label="关闭"
           >
             <X size={24} />
@@ -86,7 +86,7 @@ const ImageViewer = ({ images, initialIndex = 0, onClose }: ImageViewerProps) =>
                 e.stopPropagation();
                 goToPrevious();
               }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors duration-200"
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 rounded-lg transition-colors duration-200"
               aria-label="上一张"
             >
               <ChevronLeft size={32} />
@@ -96,7 +96,7 @@ const ImageViewer = ({ images, initialIndex = 0, onClose }: ImageViewerProps) =>
                 e.stopPropagation();
                 goToNext();
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors duration-200"
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 rounded-lg transition-colors duration-200"
               aria-label="下一张"
             >
               <ChevronRight size={32} />
@@ -132,6 +132,7 @@ const ImageViewer = ({ images, initialIndex = 0, onClose }: ImageViewerProps) =>
           </div>
         )}
       </div>
+    </div>
   );
 };
 

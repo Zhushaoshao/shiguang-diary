@@ -22,8 +22,6 @@ const DiaryDetail = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const loadedDiaryIdRef = useRef<string | null>(null);
 
-  const viewSessionKey = id ? `diary_viewed_${id}` : null;
-
   // 加载日记详情
   useEffect(() => {
     const loadDiary = async () => {
@@ -37,11 +35,8 @@ const DiaryDetail = () => {
         const data = await getDiaryById(Number(id));
         setDiary(data.diary);
 
-        if (viewSessionKey && !sessionStorage.getItem(viewSessionKey)) {
-          await incrementDiaryViews(Number(id));
-          sessionStorage.setItem(viewSessionKey, '1');
-          setDiary((prev) => (prev ? { ...prev, views: prev.views + 1 } : prev));
-        }
+        await incrementDiaryViews(Number(id));
+        setDiary((prev) => (prev ? { ...prev, views: prev.views + 1 } : prev));
       } catch (err: any) {
         console.error('加载日记失败:', err);
         setError(err.response?.data?.message || '加载失败，请稍后重试');
@@ -52,7 +47,7 @@ const DiaryDetail = () => {
     };
 
     loadDiary();
-  }, [id, viewSessionKey]);
+  }, [id]);
 
   // 格式化日期
   const formatDate = (dateString: string) => {

@@ -82,16 +82,17 @@ const Profile = () => {
     <div className="min-h-screen bg-neutral-bg">
       {/* 头部导航 */}
       <header className="glass-paper sticky top-0 z-10 border-b border-neutral-border/30">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center gap-4">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-3 lg:py-4">
+          <div className="flex items-center gap-3 min-w-0">
             <button
               onClick={() => navigate(-1)}
-              className="btn-back"
+              className="btn-back-compact lg:btn-back"
+              aria-label="返回"
             >
               <ArrowLeft size={20} strokeWidth={2.25} />
-              <span>返回</span>
+              <span className="hidden lg:inline">返回</span>
             </button>
-            <h1 className="text-2xl font-display font-semibold text-neutral-ink">个人中心</h1>
+            <h1 className="text-lg lg:text-2xl font-display font-semibold text-neutral-ink truncate">个人中心</h1>
           </div>
         </div>
       </header>

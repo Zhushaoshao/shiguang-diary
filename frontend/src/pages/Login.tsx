@@ -76,7 +76,7 @@ const Login = () => {
         </div>
 
         {/* 登录表单 */}
-        <div className="diary-paper-card p-8 animate-slide-up">
+        <div className="diary-paper-card p-6 sm:p-8 animate-slide-up">
           <div className="flex items-center justify-center mb-6">
             <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-xl flex items-center justify-center shadow-paper">
               <LogIn size={32} strokeWidth={2} className="text-primary-500" />

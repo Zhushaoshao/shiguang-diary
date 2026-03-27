@@ -110,7 +110,7 @@ const Register = () => {
         </div>
 
         {/* 注册表单 */}
-        <div className="diary-paper-card p-8 animate-slide-up">
+        <div className="diary-paper-card p-6 sm:p-8 animate-slide-up">
           <div className="flex items-center justify-center mb-6">
             <div className="w-16 h-16 bg-gradient-to-br from-sunset-peach/20 to-sunset-coral/20 rounded-xl flex items-center justify-center shadow-paper">
               <UserPlus size={32} strokeWidth={2} className="text-sunset-peach" />

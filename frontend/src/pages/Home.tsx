@@ -6,7 +6,7 @@ import DiaryCard from '../components/DiaryCard';
 import SearchBar from '../components/SearchBar';
 import LoadingSpinner from '../components/LoadingSpinner';
 import EmptyState from '../components/EmptyState';
-import { ChevronUp, PenSquare, FileStack, LogIn, UserPlus, LogOut, User } from 'lucide-react';
+import { ChevronUp, PenSquare, FileStack, LogOut, UserPlus, User, DoorOpen } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 
 const Home = () => {
@@ -176,7 +176,7 @@ const Home = () => {
                     onClick={() => navigate('/login')}
                     className="btn-paper border-2 border-primary-500 text-primary-500 hover:bg-primary-50 flex items-center gap-2"
                   >
-                    <LogIn size={18} strokeWidth={2} />
+                    <DoorOpen size={18} strokeWidth={2} />
                     <span>登录</span>
                   </button>
 

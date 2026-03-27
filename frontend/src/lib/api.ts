@@ -37,7 +37,9 @@ api.interceptors.response.use(
     console.error('API Response Error:', error.response?.status, error.message);
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      const currentPath = window.location.pathname + window.location.search;
+      const next = encodeURIComponent(currentPath === '/login' ? '/' : currentPath);
+      window.location.href = `/login?reason=expired&next=${next}`;
     }
     return Promise.reject(error);
   }

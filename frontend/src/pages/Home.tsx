@@ -216,8 +216,19 @@ const Home = () => {
         {/* 错误提示 */}
         {error && (
           <div className="card-paper bg-red-50 border-2 border-error/30 text-error px-5 py-4 mb-6 animate-slide-up">
-            <p className="font-display font-semibold text-base">加载失败</p>
-            <p className="text-sm mt-1">{error}</p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <p className="font-display font-semibold text-base">加载失败</p>
+                <p className="text-sm mt-1">{error}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => loadDiaries(1, !!searchKeyword, searchKeyword)}
+                className="btn-paper border-error/30 text-error hover:bg-red-100 self-start sm:self-auto"
+              >
+                重试加载
+              </button>
+            </div>
           </div>
         )}
 

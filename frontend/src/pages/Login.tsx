@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { DoorOpen, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useToastStore } from '../store/toastStore';
@@ -7,6 +7,7 @@ import api from '../lib/api';
 
 const Login = () => {
   const showToast = useToastStore((state) => state.showToast);
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.setAuth);
 
@@ -51,7 +52,8 @@ const Login = () => {
       showToast(`欢迎回来，${user.username}`, 'success');
 
       // 跳转到首页
-      navigate('/', { replace: true });
+      const next = searchParams.get('next');
+      navigate(next ? decodeURIComponent(next) : '/', { replace: true });
     } catch (err: any) {
       console.error('登录失败:', err);
       setError(err.response?.data?.message || '登录失败，请检查用户名和密码');
@@ -59,6 +61,13 @@ const Login = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const reason = searchParams.get('reason');
+    if (reason === 'expired') {
+      showToast('登录状态已失效，请重新登录', 'info', 3200);
+    }
+  }, [searchParams, showToast]);
 
   return (
     <div className="min-h-screen bg-neutral-bg flex items-center justify-center p-4 relative overflow-hidden">

@@ -104,7 +104,7 @@ const Profile = () => {
           <div className="card-paper p-6">
             <h2 className="text-xl font-display font-semibold text-neutral-ink mb-6">个人信息</h2>
 
-            <div className="flex items-center gap-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
               {/* 头像 */}
               <div className="relative group">
                 <div className="w-24 h-24 bg-gradient-sunset rounded-xl flex items-center justify-center shadow-paper">
@@ -118,7 +118,7 @@ const Profile = () => {
               </div>
 
               {/* 用户信息 */}
-              <div className="flex-1">
+              <div className="flex-1 w-full">
                 <div className="space-y-3">
                   <div>
                     <label className="text-sm text-neutral-secondary">用户名</label>

@@ -149,7 +149,7 @@ const BatchImport = () => {
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 placeholder="请粘贴包含多篇日记的文本，系统会自动识别日期并拆分...&#10;&#10;支持格式示例：&#10;2026年03月26日 08:26&#10;今天天气不错...&#10;&#10;2026-3-27 10:30&#10;去了公园散步..."
-                className="textarea-paper w-full h-96 font-display scrollbar-paper"
+                className="textarea-paper w-full h-[55vh] min-h-[320px] lg:h-96 font-display scrollbar-paper"
               />
 
               <div className="mt-4 hidden lg:flex justify-end">
@@ -182,7 +182,7 @@ const BatchImport = () => {
               </p>
             </div>
 
-            <div className="space-y-6 max-h-[calc(100vh-300px)] overflow-y-auto scrollbar-paper pr-2">
+            <div className="space-y-6 lg:max-h-[calc(100vh-300px)] lg:overflow-y-auto scrollbar-paper lg:pr-2">
               {diaries.map((diary, index) => (
                 <div
                   key={index}

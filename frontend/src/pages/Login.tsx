@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { LogIn, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { DoorOpen, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import api from '../lib/api';
 
@@ -79,7 +79,7 @@ const Login = () => {
         <div className="diary-paper-card p-6 sm:p-8 animate-slide-up">
           <div className="flex items-center justify-center mb-6">
             <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-xl flex items-center justify-center shadow-paper">
-              <LogIn size={32} strokeWidth={2} className="text-primary-500" />
+              <DoorOpen size={32} strokeWidth={2} className="text-primary-500" />
             </div>
           </div>
 
@@ -169,7 +169,7 @@ const Login = () => {
                 </>
               ) : (
                 <>
-                  <LogIn size={20} strokeWidth={2} />
+                  <DoorOpen size={20} strokeWidth={2} />
                   <span>登录</span>
                 </>
               )}

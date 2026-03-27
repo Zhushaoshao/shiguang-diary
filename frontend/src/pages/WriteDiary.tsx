@@ -315,12 +315,17 @@ const WriteDiary = () => {
 
               {/* 内容输入 */}
               <div>
-                <label
-                  htmlFor="content"
-                  className="label-paper"
-                >
-                  内容 <span className="text-error">*</span>
-                </label>
+                <div className="flex items-center justify-between gap-3 mb-2">
+                  <label
+                    htmlFor="content"
+                    className="label-paper mb-0"
+                  >
+                    内容 <span className="text-error">*</span>
+                  </label>
+                  <span className="text-xs text-neutral-secondary whitespace-nowrap">
+                    {content.length} 字
+                  </span>
+                </div>
                 <textarea
                   id="content"
                   value={content}

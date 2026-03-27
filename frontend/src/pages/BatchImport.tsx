@@ -118,7 +118,7 @@ const BatchImport = () => {
                 >
                   {submitting ? (
                     <>
-                      <LoadingSpinner size="sm" />
+                      <LoadingSpinner size="sm" inline />
                       <span>提交中...</span>
                     </>
                   ) : (
@@ -160,7 +160,7 @@ const BatchImport = () => {
                 >
                   {analyzing ? (
                     <>
-                      <LoadingSpinner size="sm" />
+                      <LoadingSpinner size="sm" inline />
                       <span>分析中...</span>
                     </>
                   ) : (
@@ -250,7 +250,7 @@ const BatchImport = () => {
             >
               {analyzing ? (
                 <>
-                  <LoadingSpinner size="sm" />
+                  <LoadingSpinner size="sm" inline />
                   <span>分析中</span>
                 </>
               ) : (
@@ -278,7 +278,7 @@ const BatchImport = () => {
               >
                 {submitting ? (
                   <>
-                    <LoadingSpinner size="sm" />
+                    <LoadingSpinner size="sm" inline />
                     <span>提交中</span>
                   </>
                 ) : (

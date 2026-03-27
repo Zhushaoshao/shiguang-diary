@@ -34,13 +34,15 @@ const ToastContainer = () => {
             role="status"
             aria-live="polite"
           >
-            <div className="flex items-start gap-3 p-4">
-              <Icon size={20} className={`mt-0.5 shrink-0 ${iconClassName}`} />
-              <p className="flex-1 text-sm leading-6 font-medium">{toast.message}</p>
+            <div className="flex items-center gap-3 p-4">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/55">
+                <Icon size={18} className={iconClassName} />
+              </div>
+              <p className="flex-1 self-center text-sm leading-6 font-medium">{toast.message}</p>
               <button
                 type="button"
                 onClick={() => removeToast(toast.id)}
-                className="icon-action-btn w-8 h-8 rounded-lg text-neutral-secondary hover:bg-black/5 hover:text-neutral-ink"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-neutral-secondary hover:bg-black/5 hover:text-neutral-ink transition-colors duration-200"
                 aria-label="关闭提示"
               >
                 <X size={16} />

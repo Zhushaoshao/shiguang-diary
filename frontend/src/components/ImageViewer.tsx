@@ -49,89 +49,89 @@ const ImageViewer = ({ images, initialIndex = 0, onClose }: ImageViewerProps) =>
       role="dialog"
       aria-label="图片查看器"
     >
-      {/* 关闭按钮 */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors duration-200"
-        aria-label="关闭"
-      >
-        <X size={24} />
-      </button>
-
-      {/* 图片计数 */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 text-white text-sm bg-black/50 px-4 py-2 rounded-full">
-        {currentIndex + 1} / {images.length}
-      </div>
-
-      {/* 主图片 */}
       <div
-        className="relative w-full max-w-7xl max-h-[90vh] mx-auto px-4 sm:px-16"
+        className="relative w-full max-w-7xl mx-auto px-4 sm:px-16"
         onClick={(e) => e.stopPropagation()}
       >
-        <MediaImage
-          key={images[currentIndex]}
-          src={getImageUrl(images[currentIndex])}
-          alt={`图片 ${currentIndex + 1}`}
-          loading="eager"
-          className="mx-auto max-w-full max-h-[90vh] rounded-lg"
-          imgClassName="max-w-full max-h-[90vh] object-contain rounded-lg"
-        />
-      </div>
-
-      {/* 左右切换按钮 */}
-      {images.length > 1 && (
-        <>
+        <div className="mb-4 flex items-center justify-between gap-4 text-white">
+          <div className="rounded-full bg-black/50 px-4 py-2 text-sm">
+            {currentIndex + 1} / {images.length}
+          </div>
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              goToPrevious();
-            }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors duration-200"
-            aria-label="上一张"
+            onClick={onClose}
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-white hover:bg-white/10 transition-colors duration-200"
+            aria-label="关闭"
           >
-            <ChevronLeft size={32} />
+            <X size={24} />
           </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              goToNext();
-            }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors duration-200"
-            aria-label="下一张"
-          >
-            <ChevronRight size={32} />
-          </button>
-        </>
-      )}
+        </div>
 
-      {/* 缩略图导航 */}
-      {images.length > 1 && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-black/50 p-2 rounded-lg max-w-[90vw] overflow-x-auto">
-          {images.map((image, index) => (
+        {/* 主图片 */}
+        <div className="relative w-full max-h-[90vh] mx-auto">
+          <MediaImage
+            key={images[currentIndex]}
+            src={getImageUrl(images[currentIndex])}
+            alt={`图片 ${currentIndex + 1}`}
+            loading="eager"
+            className="mx-auto max-w-full max-h-[90vh] rounded-lg"
+            imgClassName="max-w-full max-h-[90vh] object-contain rounded-lg"
+          />
+        </div>
+
+        {/* 左右切换按钮 */}
+        {images.length > 1 && (
+          <>
             <button
-              key={index}
               onClick={(e) => {
                 e.stopPropagation();
-                setCurrentIndex(index);
+                goToPrevious();
               }}
-              className={`w-16 h-16 rounded overflow-hidden flex-shrink-0 transition-all duration-200 ${
-                index === currentIndex
-                  ? 'ring-2 ring-white scale-110'
-                  : 'opacity-60 hover:opacity-100'
-              }`}
-              aria-label={`查看图片 ${index + 1}`}
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors duration-200"
+              aria-label="上一张"
             >
-              <MediaImage
-                src={getImageUrl(image)}
-                alt={`缩略图 ${index + 1}`}
-                className="w-full h-full"
-                imgClassName="w-full h-full object-cover"
-              />
+              <ChevronLeft size={32} />
             </button>
-          ))}
-        </div>
-      )}
-    </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                goToNext();
+              }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors duration-200"
+              aria-label="下一张"
+            >
+              <ChevronRight size={32} />
+            </button>
+          </>
+        )}
+
+        {/* 缩略图导航 */}
+        {images.length > 1 && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-black/50 p-2 rounded-lg max-w-[90vw] overflow-x-auto">
+            {images.map((image, index) => (
+              <button
+                key={index}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIndex(index);
+                }}
+                className={`w-16 h-16 rounded overflow-hidden flex-shrink-0 transition-all duration-200 ${
+                  index === currentIndex
+                    ? 'ring-2 ring-white scale-110'
+                    : 'opacity-60 hover:opacity-100'
+                }`}
+                aria-label={`查看图片 ${index + 1}`}
+              >
+                <MediaImage
+                  src={getImageUrl(image)}
+                  alt={`缩略图 ${index + 1}`}
+                  className="w-full h-full"
+                  imgClassName="w-full h-full object-cover"
+                />
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
   );
 };
 

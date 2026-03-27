@@ -103,7 +103,7 @@ const BatchImport = () => {
             </div>
 
             {diaries.length > 0 && (
-              <div className="flex items-center gap-3">
+              <div className="hidden lg:flex items-center gap-3">
                 <button
                   onClick={handleReset}
                   className="btn-paper flex items-center gap-2"
@@ -135,7 +135,7 @@ const BatchImport = () => {
       </header>
 
       {/* 主内容 */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 lg:pb-8">
         {diaries.length === 0 ? (
           /* 输入区域 */
           <div className="max-w-4xl mx-auto animate-fade-in">
@@ -237,6 +237,61 @@ const BatchImport = () => {
           </div>
         )}
       </main>
+
+      {/* 移动端底部操作栏 */}
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-30 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 bg-neutral-bg/85 backdrop-blur-md border-t border-neutral-border/50">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 gap-3">
+          {diaries.length === 0 ? (
+            <button
+              type="button"
+              onClick={handleAnalyze}
+              disabled={analyzing || !inputText.trim()}
+              className="col-span-2 btn-paper-primary w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {analyzing ? (
+                <>
+                  <LoadingSpinner size="sm" />
+                  <span>分析中</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles size={18} />
+                  <span>分析拆分</span>
+                </>
+              )}
+            </button>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={handleReset}
+                className="btn-paper w-full justify-center"
+              >
+                <X size={18} />
+                <span>重置内容</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleSubmitAll}
+                disabled={submitting}
+                className="btn-paper-primary w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {submitting ? (
+                  <>
+                    <LoadingSpinner size="sm" />
+                    <span>提交中</span>
+                  </>
+                ) : (
+                  <>
+                    <Save size={18} />
+                    <span>提交全部</span>
+                  </>
+                )}
+              </button>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

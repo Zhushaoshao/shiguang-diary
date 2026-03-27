@@ -225,12 +225,12 @@ const WriteDiary = () => {
               </h1>
             </div>
 
-            <div className="flex items-center gap-3">
-              {/* 移动端预览切换按钮 */}
+            <div className="hidden lg:flex items-center gap-3">
+              {/* 桌面端预览切换按钮 */}
               <button
                 type="button"
                 onClick={() => setShowPreview(!showPreview)}
-                className="lg:hidden btn-paper flex items-center gap-2"
+                className="btn-paper flex items-center gap-2"
               >
                 {showPreview ? (
                   <>
@@ -245,7 +245,7 @@ const WriteDiary = () => {
                 )}
               </button>
 
-              {/* 发布/更新按钮 */}
+              {/* 桌面端发布/更新按钮 */}
               <button
                 onClick={handleSubmit}
                 disabled={saving}
@@ -269,7 +269,7 @@ const WriteDiary = () => {
       </header>
 
       {/* 主内容区域 */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 lg:pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* 左侧编辑器 */}
           <div className={`${showPreview ? 'hidden lg:block' : 'block'} animate-fade-in`}>
@@ -388,6 +388,47 @@ const WriteDiary = () => {
           </div>
         </div>
       </main>
+
+      {/* 移动端底部操作栏 */}
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-30 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 bg-neutral-bg/85 backdrop-blur-md border-t border-neutral-border/50">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => setShowPreview(!showPreview)}
+            className="btn-paper w-full justify-center"
+          >
+            {showPreview ? (
+              <>
+                <EyeOff size={18} strokeWidth={2} />
+                <span>编辑内容</span>
+              </>
+            ) : (
+              <>
+                <Eye size={18} strokeWidth={2} />
+                <span>查看预览</span>
+              </>
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={saving}
+            className="btn-paper-primary w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {saving ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span>{isEditMode ? '更新中' : '发布中'}</span>
+              </>
+            ) : (
+              <>
+                <Save size={18} strokeWidth={2} />
+                <span>{isEditMode ? '更新日记' : '发布日记'}</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

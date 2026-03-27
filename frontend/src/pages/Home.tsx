@@ -6,6 +6,7 @@ import DiaryCard from '../components/DiaryCard';
 import SearchBar from '../components/SearchBar';
 import LoadingSpinner from '../components/LoadingSpinner';
 import EmptyState from '../components/EmptyState';
+import HomeSkeleton from '../components/HomeSkeleton';
 import { ChevronUp, PenSquare, FileStack, LogOut, UserPlus, User, DoorOpen } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 
@@ -14,6 +15,8 @@ const Home = () => {
   const { user, isAuthenticated, logout } = useAuthStore();
 
   const [diaries, setDiaries] = useState<Diary[]>([]);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [showSkeleton, setShowSkeleton] = useState(true);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -28,8 +31,14 @@ const Home = () => {
   const loadDiaries = useCallback(async (pageNum: number, isSearch = false, keyword = '') => {
     if (loadingRef.current) return;
 
+    const isFirstPage = pageNum === 1;
+
     loadingRef.current = true;
     setLoading(true);
+    setLoadingMore(!isFirstPage);
+    if (isFirstPage) {
+      setShowSkeleton(true);
+    }
     setError(null);
 
     try {
@@ -42,7 +51,7 @@ const Home = () => {
         }
         setHasMore(data.diaries.length === 10);
       } else {
-        const data = await getDiaries(pageNum, 10);
+        const data = await getDiaries(pageNum, 10, isFirstPage);
         if (pageNum === 1) {
           setDiaries(data.diaries);
         } else {
@@ -56,6 +65,8 @@ const Home = () => {
     } finally {
       loadingRef.current = false;
       setLoading(false);
+      setLoadingMore(false);
+      setShowSkeleton(false);
     }
   }, []);
 
@@ -211,7 +222,9 @@ const Home = () => {
         )}
 
         {/* 日记列表 - 错落揭示动画 */}
-        {diaries.length > 0 ? (
+        {showSkeleton ? (
+          <HomeSkeleton />
+        ) : diaries.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {diaries.map((diary, index) => (
               <div
@@ -238,7 +251,7 @@ const Home = () => {
         )}
 
         {/* 加载更多指示器 */}
-        {loading && <LoadingSpinner />}
+        {loadingMore && <LoadingSpinner size="md" />}
 
         {/* 无限滚动触发器 */}
         <div ref={observerTarget} className="h-4" />

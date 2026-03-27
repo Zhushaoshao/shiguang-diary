@@ -24,11 +24,28 @@ export interface DiaryListResponse {
   };
 }
 
+const diaryListCache = new Map<string, { timestamp: number; data: DiaryListResponse }>();
+const DIARY_LIST_CACHE_TTL = 30 * 1000;
+
+
 // 获取日记列表
-export const getDiaries = async (page = 1, limit = 10): Promise<DiaryListResponse> => {
+export const getDiaries = async (page = 1, limit = 10, useCache = false): Promise<DiaryListResponse> => {
+  const cacheKey = `${page}-${limit}`;
+  const cached = diaryListCache.get(cacheKey);
+
+  if (useCache && cached && Date.now() - cached.timestamp < DIARY_LIST_CACHE_TTL) {
+    return cached.data;
+  }
+
   const response = await api.get('/diaries', {
     params: { page, limit },
   });
+
+  diaryListCache.set(cacheKey, {
+    timestamp: Date.now(),
+    data: response.data,
+  });
+
   return response.data;
 };
 

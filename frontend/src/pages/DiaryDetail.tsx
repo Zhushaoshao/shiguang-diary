@@ -353,18 +353,18 @@ const DiaryDetail = () => {
             <p id="delete-dialog-description" className="text-gray-600 mb-6">
               确定要删除这篇日记吗？此操作无法撤销。
             </p>
-            <div className="flex gap-3 justify-end">
+            <div className="flex flex-col-reverse sm:flex-row gap-3 sm:justify-end">
               <button
                 onClick={() => setShowDeleteModal(false)}
                 disabled={deleting}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-full hover:bg-gray-50 transition-colors duration-200 disabled:opacity-50"
+                className="btn-paper justify-center disabled:opacity-50"
               >
                 取消
               </button>
               <button
                 onClick={handleDelete}
                 disabled={deleting}
-                className="px-6 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors duration-200 disabled:opacity-50 flex items-center gap-2"
+                className="btn-paper justify-center bg-red-600 text-white border-red-700 hover:bg-red-700 disabled:opacity-50"
               >
                 {deleting ? (
                   <>

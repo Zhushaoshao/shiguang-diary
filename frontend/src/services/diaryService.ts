@@ -27,6 +27,9 @@ export interface DiaryListResponse {
 const diaryListCache = new Map<string, { timestamp: number; data: DiaryListResponse }>();
 const DIARY_LIST_CACHE_TTL = 30 * 1000;
 
+export const clearDiaryListCache = () => {
+  diaryListCache.clear();
+};
 
 // 获取日记列表
 export const getDiaries = async (page = 1, limit = 10, useCache = false): Promise<DiaryListResponse> => {
@@ -75,6 +78,7 @@ export const createDiary = async (data: FormData | { title: string; content: str
   const response = await api.post('/diaries', data, {
     headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : {},
   });
+  clearDiaryListCache();
   return response.data;
 };
 
@@ -85,12 +89,14 @@ export const updateDiary = async (id: number, formData: FormData) => {
       'Content-Type': 'multipart/form-data',
     },
   });
+  clearDiaryListCache();
   return response.data;
 };
 
 // 删除日记
 export const deleteDiary = async (id: number) => {
   const response = await api.delete(`/diaries/${id}`);
+  clearDiaryListCache();
   return response.data;
 };
 

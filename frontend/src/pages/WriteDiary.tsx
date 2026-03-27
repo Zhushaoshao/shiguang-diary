@@ -304,16 +304,18 @@ const WriteDiary = () => {
               />
 
               {/* 封面上传 */}
-              <FileUpload
-                label="封面图（可选）"
-                accept="image/*"
-                maxFiles={1}
-                maxSize={10}
-                value={cover}
-                onChange={setCover}
-                existingFiles={existingCover ? [existingCover] : []}
-                onRemoveExisting={() => setExistingCover(null)}
-              />
+              <div className="space-y-2">
+                <FileUpload
+                  label="封面图（可选）"
+                  accept="image/*"
+                  maxFiles={1}
+                  maxSize={10}
+                  value={cover}
+                  onChange={setCover}
+                  existingFiles={existingCover ? [existingCover] : []}
+                  onRemoveExisting={() => setExistingCover(null)}
+                />
+              </div>
 
               {/* 内容输入 */}
               <div>
@@ -340,35 +342,39 @@ const WriteDiary = () => {
               </div>
 
               {/* 图片上传 */}
-              <FileUpload
-                label="图片（可选，最多9张）"
-                accept="image/*"
-                multiple
-                maxFiles={9}
-                maxSize={10}
-                value={images}
-                onChange={setImages}
-                existingFiles={existingImages}
-                onRemoveExisting={(filename) => {
-                  setExistingImages(existingImages.filter(img => img !== filename));
-                }}
-              />
+              <div className="space-y-2">
+                <FileUpload
+                  label="图片（可选，最多9张）"
+                  accept="image/*"
+                  multiple
+                  maxFiles={9}
+                  maxSize={10}
+                  value={images}
+                  onChange={setImages}
+                  existingFiles={existingImages}
+                  onRemoveExisting={(filename) => {
+                    setExistingImages(existingImages.filter(img => img !== filename));
+                  }}
+                />
+              </div>
 
               {/* 视频上传 */}
-              <FileUpload
-                label="视频（可选，最多3个）"
-                accept="video/*"
-                multiple
-                maxFiles={3}
-                maxSize={50}
-                value={video}
-                onChange={setVideo}
-                preview={true}
-                existingFiles={existingVideos}
-                onRemoveExisting={(filename) => {
-                  setExistingVideos(existingVideos.filter(v => v !== filename));
-                }}
-              />
+              <div className="space-y-2">
+                <FileUpload
+                  label="视频（可选，最多3个）"
+                  accept="video/*"
+                  multiple
+                  maxFiles={3}
+                  maxSize={50}
+                  value={video}
+                  onChange={setVideo}
+                  preview={true}
+                  existingFiles={existingVideos}
+                  onRemoveExisting={(filename) => {
+                    setExistingVideos(existingVideos.filter(v => v !== filename));
+                  }}
+                />
+              </div>
             </form>
           </div>
 

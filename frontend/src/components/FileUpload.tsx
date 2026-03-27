@@ -1,5 +1,7 @@
-import { useState, useRef } from 'react';
-import { Upload, X, Image as ImageIcon } from 'lucide-react';
+import { useMemo, useState, useRef } from 'react';
+import { Upload, X, Image as ImageIcon, Film, Sparkles } from 'lucide-react';
+import { useToastStore } from '../store/toastStore';
+import MediaImage from './MediaImage';
 
 interface FileUploadProps {
   label: string;
@@ -26,6 +28,14 @@ const FileUpload = ({
   existingFiles = [],
   onRemoveExisting,
 }: FileUploadProps) => {
+  const showToast = useToastStore((state) => state.showToast);
+  const isImageUpload = accept.includes('image');
+  const isVideoUpload = accept.includes('video');
+
+  const previewUrls = useMemo(
+    () => value.map((file) => ({ file, url: URL.createObjectURL(file) })),
+    [value]
+  );
   const [dragActive, setDragActive] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -43,13 +53,13 @@ const FileUpload = ({
     for (const file of fileArray) {
       // 检查文件大小
       if (file.size > maxSize * 1024 * 1024) {
-        alert(`文件 ${file.name} 超过 ${maxSize}MB 限制`);
+        showToast(`文件 ${file.name} 超过 ${maxSize}MB 限制`, 'error', 3200);
         continue;
       }
 
       // 检查文件数量
       if (value.length + validFiles.length >= maxFiles) {
-        alert(`最多只能上传 ${maxFiles} 个文件`);
+        showToast(`最多只能上传 ${maxFiles} 个文件`, 'info');
         break;
       }
 
@@ -58,6 +68,7 @@ const FileUpload = ({
 
     if (validFiles.length > 0) {
       onChange([...value, ...validFiles]);
+      showToast(`已添加 ${validFiles.length} 个文件`, 'success');
     }
   };
 
@@ -87,22 +98,21 @@ const FileUpload = ({
     onChange(newFiles);
   };
 
-  const getPreviewUrl = (file: File) => {
-    return URL.createObjectURL(file);
-  };
-
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-gray-700">
-        {label}
-      </label>
+      <div className="flex items-center justify-between gap-3">
+        <label className="label-paper mb-0">{label}</label>
+        <span className="text-xs text-neutral-secondary whitespace-nowrap">
+          {existingFiles.length + value.length}/{maxFiles}
+        </span>
+      </div>
 
       {/* 上传区域 */}
       <div
-        className={`relative border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-200 ${
+        className={`card-paper !p-0 overflow-hidden border-2 border-dashed ${
           dragActive
-            ? 'border-primary bg-primary/5'
-            : 'border-gray-300 hover:border-gray-400'
+            ? 'border-primary-500 bg-primary-50/60 shadow-glow'
+            : 'border-neutral-border hover:border-primary-300'
         }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
@@ -119,105 +129,109 @@ const FileUpload = ({
           aria-label={label}
         />
 
-        <div className="flex flex-col items-center gap-2">
-          <Upload size={32} className="text-gray-400" />
-          <div className="text-sm text-gray-600">
+        <div className="px-5 py-8 sm:px-6 sm:py-10 text-center">
+          <div className="flex flex-col items-center gap-3">
+            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-paper ${dragActive ? 'bg-primary-500 text-white' : 'bg-primary-50 text-primary-500'}`}>
+              {isVideoUpload ? <Film size={26} /> : <Upload size={26} />}
+            </div>
+            <div>
+              <p className="text-sm sm:text-base font-medium text-neutral-ink">
+                {dragActive ? '松开即可开始添加文件' : '拖拽文件到此处，或点击选择文件'}
+              </p>
+              <p className="text-xs sm:text-sm text-neutral-secondary mt-1">
+                {multiple ? `最多 ${maxFiles} 个文件，` : ''}单个文件不超过 {maxSize}MB
+              </p>
+            </div>
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
-              className="text-primary hover:text-secondary font-medium"
+              className="btn-paper-primary"
             >
-              点击上传
+              <Sparkles size={16} />
+              <span>选择文件</span>
             </button>
-            <span> 或拖拽文件到此处</span>
           </div>
-          <p className="text-xs text-gray-500">
-            {multiple ? `最多 ${maxFiles} 个文件，` : ''}
-            单个文件不超过 {maxSize}MB
-          </p>
         </div>
       </div>
 
       {/* 文件预览 */}
       {preview && (existingFiles.length > 0 || value.length > 0) && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-          {/* 已有文件 */}
           {existingFiles.map((filename, index) => (
             <div
               key={`existing-${index}`}
-              className="relative group aspect-square rounded-lg overflow-hidden bg-gray-100 border-2 border-primary-300"
+              className="relative group aspect-square rounded-xl overflow-hidden bg-neutral-bg border border-primary-200 shadow-paper-sm"
             >
-              {accept.includes('image') ? (
-                <img
+              {isImageUpload ? (
+                <MediaImage
                   src={getFileUrl(filename)}
                   alt={filename}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full"
+                  imgClassName="w-full h-full object-cover"
                 />
-              ) : accept.includes('video') ? (
-                <video
-                  src={getFileUrl(filename)}
-                  className="w-full h-full object-cover"
-                />
+              ) : isVideoUpload ? (
+                <video src={getFileUrl(filename)} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <ImageIcon size={32} className="text-gray-400" />
+                <div className="w-full h-full flex items-center justify-center text-neutral-secondary">
+                  <ImageIcon size={32} />
                 </div>
               )}
 
-              {/* 已有文件标记 */}
-              <div className="absolute top-2 left-2 bg-primary-500 text-white text-xs px-2 py-0.5 rounded-full">
+              <div className="absolute top-2 left-2 badge-paper bg-primary-500 text-white text-[11px] px-2 py-1">
                 已有
               </div>
 
-              {/* 删除按钮 */}
               {onRemoveExisting && (
                 <button
                   type="button"
                   onClick={() => onRemoveExisting(filename)}
-                  className="absolute top-2 right-2 w-6 h-6 bg-red-600 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  className="absolute top-2 right-2 icon-action-btn w-8 h-8 rounded-full bg-red-600 text-white opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
                   aria-label="删除文件"
                 >
                   <X size={14} />
                 </button>
               )}
 
-              {/* 文件名 */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-1 truncate">
+              <div className="absolute bottom-0 left-0 right-0 bg-black/55 text-white text-[11px] p-2 truncate">
                 {filename}
               </div>
             </div>
           ))}
 
-          {/* 新上传的文件 */}
-          {value.map((file, index) => (
+          {previewUrls.map(({ file, url }, index) => (
             <div
-              key={`new-${index}`}
-              className="relative group aspect-square rounded-lg overflow-hidden bg-gray-100"
+              key={`new-${file.name}-${index}`}
+              className="relative group aspect-square rounded-xl overflow-hidden bg-neutral-bg border border-neutral-border shadow-paper-sm"
             >
               {file.type.startsWith('image/') ? (
-                <img
-                  src={getPreviewUrl(file)}
+                <MediaImage
+                  src={url}
                   alt={file.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full"
+                  imgClassName="w-full h-full object-cover"
                 />
+              ) : file.type.startsWith('video/') ? (
+                <video src={url} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <ImageIcon size={32} className="text-gray-400" />
+                <div className="w-full h-full flex items-center justify-center text-neutral-secondary">
+                  <ImageIcon size={32} />
                 </div>
               )}
 
-              {/* 删除按钮 */}
+              <div className="absolute top-2 left-2 badge-paper bg-emerald-500 text-white text-[11px] px-2 py-1">
+                新增
+              </div>
+
               <button
                 type="button"
                 onClick={() => removeFile(index)}
-                className="absolute top-2 right-2 w-6 h-6 bg-red-600 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                className="absolute top-2 right-2 icon-action-btn w-8 h-8 rounded-full bg-red-600 text-white opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
                 aria-label="删除文件"
               >
                 <X size={14} />
               </button>
 
-              {/* 文件名 */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-1 truncate">
+              <div className="absolute bottom-0 left-0 right-0 bg-black/55 text-white text-[11px] p-2 truncate">
                 {file.name}
               </div>
             </div>

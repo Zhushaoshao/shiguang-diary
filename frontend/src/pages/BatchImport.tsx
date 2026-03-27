@@ -5,8 +5,10 @@ import { splitTextIntoDiaries } from '../utils/dateParser';
 import type { DiaryEntry } from '../utils/dateParser';
 import { createDiary } from '../services/diaryService';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { useToastStore } from '../store/toastStore';
 
 const BatchImport = () => {
+  const showToast = useToastStore((state) => state.showToast);
   const navigate = useNavigate();
   const [inputText, setInputText] = useState('');
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
@@ -17,7 +19,7 @@ const BatchImport = () => {
   // 分析文本
   const handleAnalyze = () => {
     if (!inputText.trim()) {
-      alert('请输入要导入的文本');
+      showToast('请先粘贴要导入的文本', 'info');
       return;
     }
 
@@ -48,7 +50,7 @@ const BatchImport = () => {
   // 一键提交所有
   const handleSubmitAll = async () => {
     if (diaries.length === 0) {
-      alert('没有可提交的日记');
+      showToast('当前没有可提交的日记', 'info');
       return;
     }
 
@@ -68,11 +70,15 @@ const BatchImport = () => {
         }
       }
 
-      alert(`成功导入 ${successCount} 篇日记`);
-      navigate('/');
+      if (successCount > 0) {
+        showToast(`成功导入 ${successCount} 篇日记`, 'success');
+        navigate('/');
+      } else {
+        showToast('没有成功导入任何日记，请检查内容后重试', 'error', 3200);
+      }
     } catch (error) {
       console.error('批量导入失败:', error);
-      alert('导入失败，请重试');
+      showToast('导入失败，请重试', 'error');
     } finally {
       setSubmitting(false);
     }

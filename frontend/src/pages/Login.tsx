@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { DoorOpen, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { useToastStore } from '../store/toastStore';
 import api from '../lib/api';
 
 const Login = () => {
+  const showToast = useToastStore((state) => state.showToast);
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.setAuth);
 
@@ -46,6 +48,7 @@ const Login = () => {
 
       // 保存认证信息
       setAuth(token, user);
+      showToast(`欢迎回来，${user.username}`, 'success');
 
       // 跳转到首页
       navigate('/', { replace: true });

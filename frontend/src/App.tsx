@@ -8,6 +8,7 @@ import BatchImport from './pages/BatchImport';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ToastContainer from './components/ToastContainer';
 
 // 受保护的路由组件
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -52,6 +53,7 @@ function App() {
           <Route path="register" element={<Register />} />
         </Route>
       </Routes>
+      <ToastContainer />
     </BrowserRouter>
   );
 }

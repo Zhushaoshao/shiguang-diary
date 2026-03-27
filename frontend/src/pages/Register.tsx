@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { UserPlus, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import api from '../lib/api';
+import { useToastStore } from '../store/toastStore';
 
 const Register = () => {
+  const showToast = useToastStore((state) => state.showToast);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -83,7 +85,7 @@ const Register = () => {
       });
 
       // 注册成功，跳转到登录页
-      alert('注册成功！请登录');
+      showToast('注册成功，请登录你的账号', 'success');
       navigate('/login');
     } catch (err: any) {
       console.error('注册失败:', err);

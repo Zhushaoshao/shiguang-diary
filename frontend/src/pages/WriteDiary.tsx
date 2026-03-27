@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Save, Eye, EyeOff } from 'lucide-react';
 import { createDiary, updateDiary, getDiaryById } from '../services/diaryService';
+import { useToastStore } from '../store/toastStore';
 import { useAuthStore } from '../store/authStore';
 import FileUpload from '../components/FileUpload';
 import DiaryPreview from '../components/DiaryPreview';
@@ -12,6 +13,7 @@ const WriteDiary = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const user = useAuthStore((state) => state.user);
+  const showToast = useToastStore((state) => state.showToast);
   const diaryId = searchParams.get('id');
   const isEditMode = !!diaryId;
 
@@ -175,13 +177,13 @@ const WriteDiary = () => {
 
       if (isEditMode && diaryId) {
         await updateDiary(Number(diaryId), formData);
-        alert('日记更新成功');
+        showToast('日记更新成功', 'success');
         // 使用 replace 替换当前历史记录，避免返回时回到编辑页
         navigate(`/post/${diaryId}`, { replace: true });
       } else {
         const result = await createDiary(formData);
         console.log('创建成功:', result);
-        alert('日记发布成功');
+        showToast('日记发布成功', 'success');
         navigate(`/post/${result.diaryId}`, { replace: true });
       }
     } catch (error: any) {
@@ -191,7 +193,7 @@ const WriteDiary = () => {
       const errorMessage = error.response?.data?.message || error.message || '保存失败，请稍后重试';
       const errorDetail = error.response?.data?.error || '';
 
-      alert(`${errorMessage}${errorDetail ? '\n' + errorDetail : ''}`);
+      showToast(`${errorMessage}${errorDetail ? `：${errorDetail}` : ''}`, 'error', 3200);
     } finally {
       setSaving(false);
     }

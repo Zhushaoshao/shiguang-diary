@@ -5,6 +5,7 @@ import { getDiaryById, deleteDiary, incrementDiaryViews } from '../services/diar
 import type { Diary } from '../services/diaryService';
 import { useAuthStore } from '../store/authStore';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { useToastStore } from '../store/toastStore';
 import ImageViewer from '../components/ImageViewer';
 import DiaryContent from '../components/DiaryContent';
 
@@ -12,6 +13,7 @@ const DiaryDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
+  const showToast = useToastStore((state) => state.showToast);
 
   const [diary, setDiary] = useState<Diary | null>(null);
   const [loading, setLoading] = useState(true);
@@ -73,10 +75,11 @@ const DiaryDetail = () => {
     setDeleting(true);
     try {
       await deleteDiary(diary.id);
+      showToast('日记删除成功', 'success');
       navigate('/', { replace: true });
     } catch (err: any) {
       console.error('删除日记失败:', err);
-      alert(err.response?.data?.message || '删除失败，请稍后重试');
+      showToast(err.response?.data?.message || '删除失败，请稍后重试', 'error');
     } finally {
       setDeleting(false);
       setShowDeleteModal(false);

@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, ArrowLeft, Camera, Save } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { useToastStore } from '../store/toastStore';
 import api from '../lib/api';
 
 const Profile = () => {
+  const showToast = useToastStore((state) => state.showToast);
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
 
@@ -54,6 +56,7 @@ const Profile = () => {
       });
 
       setSuccess('密码修改成功，请重新登录');
+      showToast('密码修改成功，即将跳转登录', 'success', 2800);
       setPasswordForm({
         oldPassword: '',
         newPassword: '',

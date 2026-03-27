@@ -100,10 +100,11 @@ const BatchImport = () => {
             <div className="flex items-center gap-3 min-w-0">
               <button
                 onClick={() => navigate('/')}
-                className="btn-back-compact lg:btn-back-icon lg:btn-back"
+                className="btn-back-compact lg:btn-back"
                 aria-label="返回首页"
               >
-                <ArrowLeft size={22} strokeWidth={2.4} />
+                <ArrowLeft size={20} strokeWidth={2.25} />
+                <span className="hidden lg:inline">返回</span>
               </button>
               <h1 className="text-lg lg:text-2xl font-display font-bold text-neutral-ink truncate">多篇导入</h1>
             </div>

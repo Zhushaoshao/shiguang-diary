@@ -152,7 +152,7 @@ const BatchImport = () => {
                 className="textarea-paper w-full h-96 font-display scrollbar-paper"
               />
 
-              <div className="mt-4 flex justify-end">
+              <div className="mt-4 hidden lg:flex justify-end">
                 <button
                   onClick={handleAnalyze}
                   disabled={analyzing || !inputText.trim()}

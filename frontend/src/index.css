@@ -157,7 +157,7 @@
 @layer components {
   /* 纸质按钮 - 主要 */
   .btn-paper {
-    @apply px-6 py-3 rounded-lg font-medium transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-300;
     @apply shadow-paper hover:shadow-paper-lg active:shadow-inset;
     @apply bg-neutral-card text-neutral-text;
     @apply border border-neutral-border;

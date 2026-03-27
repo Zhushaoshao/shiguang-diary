@@ -20,6 +20,9 @@ router.get('/search', diaryController.searchDiaries);
 // 获取日记详情
 router.get('/:id', diaryController.getDiaryById);
 
+// 增加浏览次数
+router.post('/:id/view', diaryController.incrementDiaryViews);
+
 // 更新日记
 router.put('/:id', authMiddleware, upload.fields([
   { name: 'images', maxCount: 9 },

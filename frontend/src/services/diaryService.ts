@@ -46,6 +46,12 @@ export const getDiaryById = async (id: number): Promise<{ diary: Diary }> => {
   return response.data;
 };
 
+// 增加浏览次数
+export const incrementDiaryViews = async (id: number) => {
+  const response = await api.post(`/diaries/${id}/view`);
+  return response.data;
+};
+
 // 创建日记
 export const createDiary = async (data: FormData | { title: string; content: string; diaryDate?: string }) => {
   const isFormData = data instanceof FormData;

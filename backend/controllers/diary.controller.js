@@ -23,6 +23,33 @@ const parseVideoField = (value) => {
   return [trimmed];
 };
 
+const buildDiaryDetail = (rawDiary) => {
+  let images = [];
+  let videos = [];
+
+  try {
+    if (rawDiary.images) {
+      if (Array.isArray(rawDiary.images)) {
+        images = rawDiary.images;
+      } else if (typeof rawDiary.images === 'string') {
+        images = JSON.parse(rawDiary.images);
+      }
+    }
+  } catch (error) {
+    console.error('解析图片 JSON 失败:', rawDiary.id, rawDiary.images, error.message);
+    images = [];
+  }
+
+  videos = parseVideoField(rawDiary.video);
+
+  return {
+    ...rawDiary,
+    images,
+    video: videos,
+  };
+};
+
+
 // 创建日记
 exports.createDiary = async (req, res) => {
   try {
@@ -84,10 +111,10 @@ exports.getDiaries = async (req, res) => {
     const offset = (page - 1) * limit;
 
     const [diaries] = await pool.query(
-      `SELECT d.*, u.username 
-       FROM diaries d 
-       JOIN users u ON d.user_id = u.id 
-       ORDER BY d.created_at DESC 
+      `SELECT d.*, u.username
+       FROM diaries d
+       JOIN users u ON d.user_id = u.id
+       ORDER BY d.created_at DESC
        LIMIT ? OFFSET ?`,
       [limit, offset]
     );
@@ -153,11 +180,11 @@ exports.searchDiaries = async (req, res) => {
 
     const searchPattern = `%${keyword}%`;
     const [diaries] = await pool.query(
-      `SELECT d.*, u.username 
-       FROM diaries d 
-       JOIN users u ON d.user_id = u.id 
+      `SELECT d.*, u.username
+       FROM diaries d
+       JOIN users u ON d.user_id = u.id
        WHERE d.title LIKE ? OR d.content LIKE ?
-       ORDER BY d.created_at DESC 
+       ORDER BY d.created_at DESC
        LIMIT ? OFFSET ?`,
       [searchPattern, searchPattern, limit, offset]
     );
@@ -203,13 +230,10 @@ exports.getDiaryById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // 增加浏览次数
-    await pool.query('UPDATE diaries SET views = views + 1 WHERE id = ?', [id]);
-
     const [diaries] = await pool.query(
-      `SELECT d.*, u.username 
-       FROM diaries d 
-       JOIN users u ON d.user_id = u.id 
+      `SELECT d.*, u.username
+       FROM diaries d
+       JOIN users u ON d.user_id = u.id
        WHERE d.id = ?`,
       [id]
     );
@@ -218,34 +242,29 @@ exports.getDiaryById = async (req, res) => {
       return res.status(404).json({ message: '日记不存在' });
     }
 
-    // 安全解析 JSON
-    let images = [];
-    let videos = [];
-
-    try {
-      if (diaries[0].images) {
-        if (Array.isArray(diaries[0].images)) {
-          images = diaries[0].images;
-        } else if (typeof diaries[0].images === 'string') {
-          images = JSON.parse(diaries[0].images);
-        }
-      }
-    } catch (error) {
-      console.error('解析图片 JSON 失败:', diaries[0].id, diaries[0].images, error.message);
-      images = [];
-    }
-
-    videos = parseVideoField(diaries[0].video);
-
-    const diary = {
-      ...diaries[0],
-      images,
-      video: videos  // 返回解析后的视频数组
-    };
+    const diary = buildDiaryDetail(diaries[0]);
 
     res.json({ diary });
   } catch (error) {
     console.error('获取日记详情错误:', error);
+    res.status(500).json({ message: '服务器错误' });
+  }
+};
+
+// 增加浏览次数
+exports.incrementDiaryViews = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const [result] = await pool.query('UPDATE diaries SET views = views + 1 WHERE id = ?', [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: '日记不存在' });
+    }
+
+    res.json({ message: '浏览次数更新成功' });
+  } catch (error) {
+    console.error('更新浏览次数错误:', error);
     res.status(500).json({ message: '服务器错误' });
   }
 };

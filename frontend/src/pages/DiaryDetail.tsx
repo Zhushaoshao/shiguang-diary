@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Calendar, Eye, User, Edit, Trash2, ArrowLeft, Image as ImageIcon } from 'lucide-react';
-import { getDiaryById, deleteDiary } from '../services/diaryService';
+import { getDiaryById, deleteDiary, incrementDiaryViews } from '../services/diaryService';
 import type { Diary } from '../services/diaryService';
 import { useAuthStore } from '../store/authStore';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -22,6 +22,8 @@ const DiaryDetail = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const loadedDiaryIdRef = useRef<string | null>(null);
 
+  const viewSessionKey = id ? `diary_viewed_${id}` : null;
+
   // 加载日记详情
   useEffect(() => {
     const loadDiary = async () => {
@@ -34,6 +36,12 @@ const DiaryDetail = () => {
       try {
         const data = await getDiaryById(Number(id));
         setDiary(data.diary);
+
+        if (viewSessionKey && !sessionStorage.getItem(viewSessionKey)) {
+          await incrementDiaryViews(Number(id));
+          sessionStorage.setItem(viewSessionKey, '1');
+          setDiary((prev) => (prev ? { ...prev, views: prev.views + 1 } : prev));
+        }
       } catch (err: any) {
         console.error('加载日记失败:', err);
         setError(err.response?.data?.message || '加载失败，请稍后重试');
@@ -44,7 +52,7 @@ const DiaryDetail = () => {
     };
 
     loadDiary();
-  }, [id]);
+  }, [id, viewSessionKey]);
 
   // 格式化日期
   const formatDate = (dateString: string) => {

@@ -21,16 +21,16 @@ const Home = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const observerTarget = useRef<HTMLDivElement>(null);
-
-  console.log('Home component rendered');
+  const initialLoadedRef = useRef(false);
+  const loadingRef = useRef(false);
 
   // 加载日记列表
   const loadDiaries = useCallback(async (pageNum: number, isSearch = false, keyword = '') => {
-    if (loading) return;
+    if (loadingRef.current) return;
 
+    loadingRef.current = true;
     setLoading(true);
     setError(null);
-    console.log('Loading diaries...', { pageNum, isSearch, keyword });
 
     try {
       if (isSearch && keyword) {
@@ -43,7 +43,6 @@ const Home = () => {
         setHasMore(data.diaries.length === 10);
       } else {
         const data = await getDiaries(pageNum, 10);
-        console.log('Diaries loaded:', data);
         if (pageNum === 1) {
           setDiaries(data.diaries);
         } else {
@@ -55,14 +54,17 @@ const Home = () => {
       console.error('加载日记失败:', error);
       setError(error.response?.data?.message || error.message || '加载失败');
     } finally {
+      loadingRef.current = false;
       setLoading(false);
     }
-  }, [loading]);
+  }, []);
 
   // 初始加载
   useEffect(() => {
+    if (initialLoadedRef.current) return;
+    initialLoadedRef.current = true;
     loadDiaries(1);
-  }, []);
+  }, [loadDiaries]);
 
   // 搜索处理
   const handleSearch = (keyword: string) => {
@@ -256,10 +258,10 @@ const Home = () => {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 w-14 h-14 btn-paper-primary rounded-xl shadow-paper-lg hover:shadow-glow transition-all duration-300 flex items-center justify-center focus:outline-none animate-scale-in float-effect"
+          className="fixed bottom-8 right-8 w-14 h-14 rounded-2xl bg-gradient-sunset text-white shadow-paper-xl hover:shadow-glow-lg hover:-translate-y-1 transition-all duration-300 flex items-center justify-center focus:outline-none animate-scale-in z-30 border border-white/20"
           aria-label="回到顶部"
         >
-          <ChevronUp size={24} strokeWidth={2.5} className="text-white" />
+          <ChevronUp size={28} strokeWidth={3} className="text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.28)]" />
         </button>
       )}
     </div>

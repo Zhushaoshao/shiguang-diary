@@ -94,9 +94,10 @@ const BatchImport = () => {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => navigate('/')}
-                className="p-2 rounded-xl hover:bg-primary-50 text-neutral-secondary hover:text-primary-500 transition-all duration-300"
+                className="btn-back btn-back-icon"
+                aria-label="返回首页"
               >
-                <ArrowLeft size={24} />
+                <ArrowLeft size={22} strokeWidth={2.4} />
               </button>
               <h1 className="text-2xl font-display font-bold text-neutral-ink">多篇导入</h1>
             </div>

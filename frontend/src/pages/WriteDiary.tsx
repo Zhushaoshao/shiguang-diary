@@ -214,10 +214,10 @@ const WriteDiary = () => {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => navigate(-1)}
-                className="flex items-center gap-2 text-neutral-secondary hover:text-primary-500 transition-all duration-300 font-medium"
+                className="btn-back"
                 aria-label="返回"
               >
-                <ArrowLeft size={20} strokeWidth={2} />
+                <ArrowLeft size={20} strokeWidth={2.25} />
                 <span>返回</span>
               </button>
               <h1 className="text-2xl font-display font-semibold text-neutral-ink">

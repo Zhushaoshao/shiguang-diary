@@ -228,25 +228,6 @@ const WriteDiary = () => {
             </div>
 
             <div className="hidden lg:flex items-center gap-3">
-              {/* 桌面端预览切换按钮 */}
-              <button
-                type="button"
-                onClick={() => setShowPreview(!showPreview)}
-                className="btn-paper flex items-center gap-2"
-              >
-                {showPreview ? (
-                  <>
-                    <EyeOff size={18} strokeWidth={2} />
-                    <span>编辑</span>
-                  </>
-                ) : (
-                  <>
-                    <Eye size={18} strokeWidth={2} />
-                    <span>预览</span>
-                  </>
-                )}
-              </button>
-
               {/* 桌面端发布/更新按钮 */}
               <button
                 onClick={handleSubmit}

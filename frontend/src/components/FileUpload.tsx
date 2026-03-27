@@ -44,13 +44,49 @@ const FileUpload = ({
     return `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '')}/uploads/${filename}`;
   };
 
+  const isAcceptedFile = (file: File) => {
+    const acceptRules = accept
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+    if (acceptRules.length === 0) return true;
+
+    return acceptRules.some((rule) => {
+      if (rule.endsWith('/*')) {
+        const prefix = rule.slice(0, -1);
+        return file.type.startsWith(prefix);
+      }
+
+      if (rule.startsWith('.')) {
+        return file.name.toLowerCase().endsWith(rule.toLowerCase());
+      }
+
+      return file.type === rule;
+    });
+  };
+
+  const resetInputValue = () => {
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+  };
+
   const handleFiles = (files: FileList | null) => {
-    if (!files) return;
+    if (!files) {
+      resetInputValue();
+      return;
+    }
 
     const fileArray = Array.from(files);
     const validFiles: File[] = [];
 
     for (const file of fileArray) {
+      if (!isAcceptedFile(file)) {
+        showToast(`文件 ${file.name} 的格式不符合当前上传区域要求`, 'error', 3200);
+        continue;
+      }
+
       // 检查文件大小
       if (file.size > maxSize * 1024 * 1024) {
         showToast(`文件 ${file.name} 超过 ${maxSize}MB 限制`, 'error', 3200);
@@ -70,6 +106,8 @@ const FileUpload = ({
       onChange([...value, ...validFiles]);
       showToast(`已添加 ${validFiles.length} 个文件`, 'success');
     }
+
+    resetInputValue();
   };
 
   const handleDrag = (e: React.DragEvent) => {
@@ -96,6 +134,8 @@ const FileUpload = ({
   const removeFile = (index: number) => {
     const newFiles = value.filter((_, i) => i !== index);
     onChange(newFiles);
+    resetInputValue();
+    showToast('文件已移除', 'info');
   };
 
   return (
@@ -184,7 +224,11 @@ const FileUpload = ({
               {onRemoveExisting && (
                 <button
                   type="button"
-                  onClick={() => onRemoveExisting(filename)}
+                  onClick={() => {
+                    onRemoveExisting(filename);
+                    resetInputValue();
+                    showToast('文件已移除', 'info');
+                  }}
                   className="absolute top-2 right-2 icon-action-btn w-8 h-8 rounded-full bg-red-600 text-white opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
                   aria-label="删除文件"
                 >

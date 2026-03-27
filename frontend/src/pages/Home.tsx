@@ -125,6 +125,10 @@ const Home = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const avatarUrl = user?.avatar
+    ? `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '')}/uploads/${user.avatar}`
+    : null;
+
   return (
     <div className="min-h-screen bg-neutral-bg">
       {/* 头部区域 - Editorial Magazine 风格 */}
@@ -167,7 +171,15 @@ const Home = () => {
                     onClick={() => navigate('/profile')}
                     className="btn-paper flex items-center gap-2"
                   >
-                    <User size={18} strokeWidth={2} />
+                    {avatarUrl ? (
+                      <img
+                        src={avatarUrl}
+                        alt={user?.username || '用户头像'}
+                        className="w-7 h-7 rounded-md object-cover border border-neutral-border/60"
+                      />
+                    ) : (
+                      <User size={18} strokeWidth={2} />
+                    )}
                     <span className="hidden sm:inline">{user?.username}</span>
                   </button>
 

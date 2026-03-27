@@ -109,17 +109,19 @@ exports.getDiaries = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
+    const userId = req.userId;
 
     const [diaries] = await pool.query(
       `SELECT d.*, u.username
        FROM diaries d
        JOIN users u ON d.user_id = u.id
+       WHERE d.user_id = ?
        ORDER BY d.created_at DESC
        LIMIT ? OFFSET ?`,
-      [limit, offset]
+      [userId, limit, offset]
     );
 
-    const [countResult] = await pool.query('SELECT COUNT(*) as total FROM diaries');
+    const [countResult] = await pool.query('SELECT COUNT(*) as total FROM diaries WHERE user_id = ?', [userId]);
     const total = countResult[0].total;
 
     // 安全解析 JSON
@@ -179,14 +181,15 @@ exports.searchDiaries = async (req, res) => {
     }
 
     const searchPattern = `%${keyword}%`;
+    const userId = req.userId;
     const [diaries] = await pool.query(
       `SELECT d.*, u.username
        FROM diaries d
        JOIN users u ON d.user_id = u.id
-       WHERE d.title LIKE ? OR d.content LIKE ?
+       WHERE d.user_id = ? AND (d.title LIKE ? OR d.content LIKE ?)
        ORDER BY d.created_at DESC
        LIMIT ? OFFSET ?`,
-      [searchPattern, searchPattern, limit, offset]
+      [userId, searchPattern, searchPattern, limit, offset]
     );
 
     // 安全解析 JSON
@@ -229,13 +232,14 @@ exports.searchDiaries = async (req, res) => {
 exports.getDiaryById = async (req, res) => {
   try {
     const { id } = req.params;
+    const userId = req.userId;
 
     const [diaries] = await pool.query(
       `SELECT d.*, u.username
        FROM diaries d
        JOIN users u ON d.user_id = u.id
-       WHERE d.id = ?`,
-      [id]
+       WHERE d.id = ? AND d.user_id = ?`,
+      [id, userId]
     );
 
     if (diaries.length === 0) {
@@ -255,8 +259,9 @@ exports.getDiaryById = async (req, res) => {
 exports.incrementDiaryViews = async (req, res) => {
   try {
     const { id } = req.params;
+    const userId = req.userId;
 
-    const [result] = await pool.query('UPDATE diaries SET views = views + 1 WHERE id = ?', [id]);
+    const [result] = await pool.query('UPDATE diaries SET views = views + 1 WHERE id = ? AND user_id = ?', [id, userId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: '日记不存在' });

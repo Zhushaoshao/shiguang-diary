@@ -25,5 +25,24 @@ const testConnection = async () => {
   }
 };
 
-module.exports = { pool, testConnection };
+const ensureUserAvatarColumn = async () => {
+  try {
+    const [columns] = await pool.query(
+      `SELECT COLUMN_NAME
+       FROM information_schema.COLUMNS
+       WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'users' AND COLUMN_NAME = 'avatar'`,
+      [process.env.DB_NAME]
+    );
+
+    if (columns.length === 0) {
+      await pool.query('ALTER TABLE users ADD COLUMN avatar VARCHAR(255) NULL AFTER email');
+      console.log('✅ 已自动补齐 users.avatar 字段');
+    }
+  } catch (error) {
+    console.error('❌ 检查/补齐 avatar 字段失败:', error.message);
+    throw error;
+  }
+};
+
+module.exports = { pool, testConnection, ensureUserAvatarColumn };
 

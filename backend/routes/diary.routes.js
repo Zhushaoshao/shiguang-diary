@@ -12,16 +12,16 @@ router.post('/', authMiddleware, upload.fields([
 ]), diaryController.createDiary);
 
 // 获取日记列表
-router.get('/', diaryController.getDiaries);
+router.get('/', authMiddleware, diaryController.getDiaries);
 
 // 搜索日记
-router.get('/search', diaryController.searchDiaries);
+router.get('/search', authMiddleware, diaryController.searchDiaries);
 
 // 获取日记详情
-router.get('/:id', diaryController.getDiaryById);
+router.get('/:id', authMiddleware, diaryController.getDiaryById);
 
 // 增加浏览次数
-router.post('/:id/view', diaryController.incrementDiaryViews);
+router.post('/:id/view', authMiddleware, diaryController.incrementDiaryViews);
 
 // 更新日记
 router.put('/:id', authMiddleware, upload.fields([

@@ -1,11 +1,19 @@
 const { pool } = require('../config/database');
 const bcrypt = require('bcryptjs');
 
+const buildUserResponse = (user) => ({
+  id: user.id,
+  username: user.username,
+  email: user.email,
+  avatar: user.avatar || null,
+  created_at: user.created_at,
+});
+
 // 获取个人信息
 exports.getProfile = async (req, res) => {
   try {
     const [users] = await pool.query(
-      'SELECT id, username, email, created_at FROM users WHERE id = ?',
+      'SELECT id, username, email, avatar, created_at FROM users WHERE id = ?',
       [req.userId]
     );
 
@@ -13,7 +21,7 @@ exports.getProfile = async (req, res) => {
       return res.status(404).json({ message: '用户不存在' });
     }
 
-    res.json({ user: users[0] });
+    res.json({ user: buildUserResponse(users[0]) });
   } catch (error) {
     console.error('获取用户信息错误:', error);
     res.status(500).json({ message: '服务器错误' });
@@ -48,6 +56,39 @@ exports.updateProfile = async (req, res) => {
     res.json({ message: '更新成功' });
   } catch (error) {
     console.error('更新用户信息错误:', error);
+    res.status(500).json({ message: '服务器错误' });
+  }
+};
+
+// 上传头像
+exports.uploadAvatar = async (req, res) => {
+  try {
+    const avatar = req.file?.filename;
+
+    if (!avatar) {
+      return res.status(400).json({ message: '请选择头像图片' });
+    }
+
+    await pool.query(
+      'UPDATE users SET avatar = ? WHERE id = ?',
+      [avatar, req.userId]
+    );
+
+    const [users] = await pool.query(
+      'SELECT id, username, email, avatar, created_at FROM users WHERE id = ?',
+      [req.userId]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: '用户不存在' });
+    }
+
+    res.json({
+      message: '头像上传成功',
+      user: buildUserResponse(users[0])
+    });
+  } catch (error) {
+    console.error('上传头像错误:', error);
     res.status(500).json({ message: '服务器错误' });
   }
 };

@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
-const { testConnection } = require('./config/database');
+const { testConnection, ensureUserAvatarColumn } = require('./config/database');
 
 const app = express();
 
@@ -77,6 +77,7 @@ const PORT = process.env.PORT || 3000;
 const startServer = async () => {
   try {
     await testConnection();
+    await ensureUserAvatarColumn();
     app.listen(PORT, () => {
       console.log(`🚀 服务器运行在 http://localhost:${PORT}`);
     });

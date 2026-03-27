@@ -43,9 +43,10 @@ const DiaryDetail = () => {
 
         await incrementDiaryViews(Number(id));
         setDiary((prev) => (prev ? { ...prev, views: prev.views + 1 } : prev));
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('加载日记失败:', err);
-        setError(err.response?.data?.message || '加载失败，请稍后重试');
+        const message = err instanceof Error ? err.message : '加载失败，请稍后重试';
+        setError(message);
         loadedDiaryIdRef.current = null;
       } finally {
         setLoading(false);
@@ -81,9 +82,10 @@ const DiaryDetail = () => {
       await deleteDiary(diary.id);
       showToast('日记删除成功', 'success');
       navigate('/', { replace: true });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('删除日记失败:', err);
-      showToast(err.response?.data?.message || '删除失败，请稍后重试', 'error');
+      const message = err instanceof Error ? err.message : '删除失败，请稍后重试';
+      showToast(message, 'error');
     } finally {
       setDeleting(false);
       setShowDeleteModal(false);

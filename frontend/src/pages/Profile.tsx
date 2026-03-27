@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, ArrowLeft, Camera, Save } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
@@ -8,7 +8,10 @@ import api from '../lib/api';
 const Profile = () => {
   const showToast = useToastStore((state) => state.showToast);
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+  const { user, logout, updateUser } = useAuthStore();
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
   // 修改密码表单
   const [passwordForm, setPasswordForm] = useState({
@@ -20,8 +23,64 @@ const Profile = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
+  useEffect(() => {
+    return () => {
+      if (avatarPreview?.startsWith('blob:')) {
+        URL.revokeObjectURL(avatarPreview);
+      }
+    };
+  }, [avatarPreview]);
+
+  const handleAvatarClick = () => {
+    avatarInputRef.current?.click();
+  };
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      showToast('请选择图片文件作为头像', 'error');
+      e.target.value = '';
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('头像大小不能超过 5MB', 'error');
+      e.target.value = '';
+      return;
+    }
+
+    if (avatarPreview?.startsWith('blob:')) {
+      URL.revokeObjectURL(avatarPreview);
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+    setAvatarPreview(previewUrl);
+    setUploadingAvatar(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('avatar', file);
+
+      const response = await api.post('/users/avatar', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      updateUser(response.data.user);
+      showToast('头像更新成功', 'success');
+    } catch (err: any) {
+      console.error('上传头像失败:', err);
+      showToast(err.response?.data?.message || '头像上传失败', 'error');
+      setAvatarPreview(null);
+    } finally {
+      setUploadingAvatar(false);
+      e.target.value = '';
+    }
+  };
+
   // 处理密码修改
-  const handlePasswordChange = async (e: React.FormEvent) => {
+  const handlePasswordChange = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
@@ -81,6 +140,10 @@ const Profile = () => {
     return null;
   }
 
+  const avatarUrl = user.avatar
+    ? `${import.meta.env.VITE_API_BASE_URL?.replace('/api', '')}/uploads/${user.avatar}`
+    : null;
+
   return (
     <div className="min-h-screen bg-neutral-bg">
       {/* 头部导航 */}
@@ -110,14 +173,40 @@ const Profile = () => {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
               {/* 头像 */}
               <div className="relative group">
-                <div className="w-24 h-24 bg-gradient-sunset rounded-xl flex items-center justify-center shadow-paper">
-                  <span className="text-white text-3xl font-display font-bold">
-                    {user.username.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-                <div className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
-                  <Camera size={24} strokeWidth={2} className="text-white" />
-                </div>
+                <input
+                  ref={avatarInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleAvatarChange}
+                />
+                <button
+                  type="button"
+                  onClick={handleAvatarClick}
+                  className="relative block w-24 h-24 rounded-lg overflow-hidden shadow-paper focus:outline-none"
+                  aria-label="选择头像图片"
+                >
+                  {avatarPreview || avatarUrl ? (
+                    <img
+                      src={avatarPreview || avatarUrl || ''}
+                      alt="头像"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-sunset flex items-center justify-center">
+                      <span className="text-white text-3xl font-display font-bold">
+                        {user.username.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+                    {uploadingAvatar ? (
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <Camera size={24} strokeWidth={2} className="text-white" />
+                    )}
+                  </div>
+                </button>
               </div>
 
               {/* 用户信息 */}

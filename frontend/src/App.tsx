@@ -23,8 +23,22 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="post/:id" element={<DiaryDetail />} />
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="post/:id"
+            element={
+              <ProtectedRoute>
+                <DiaryDetail />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="write"
             element={

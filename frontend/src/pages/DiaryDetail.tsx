@@ -7,6 +7,7 @@ import { useAuthStore } from '../store/authStore';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useToastStore } from '../store/toastStore';
 import ImageViewer from '../components/ImageViewer';
+import VideoViewer from '../components/VideoViewer';
 import DiaryContent from '../components/DiaryContent';
 import MediaImage from '../components/MediaImage';
 
@@ -22,6 +23,8 @@ const DiaryDetail = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [showImageViewer, setShowImageViewer] = useState(false);
+  const [showVideoViewer, setShowVideoViewer] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const loadedDiaryIdRef = useRef<string | null>(null);
 
@@ -261,22 +264,36 @@ const DiaryDetail = () => {
                 <div className="mt-8">
                   <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
                     {videos.map((videoFile, index) => (
-                      <div key={index} className="relative aspect-square rounded-lg overflow-hidden bg-neutral-bg shadow-card hover:shadow-card-hover transition-all duration-300 group">
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => {
+                          setSelectedVideo(getImageUrl(videoFile));
+                          setShowVideoViewer(true);
+                        }}
+                        className="relative aspect-square rounded-lg overflow-hidden bg-neutral-bg shadow-card hover:shadow-card-hover transition-all duration-300 group text-left"
+                        aria-label={`查看视频 ${index + 1}`}
+                      >
                         <video
                           src={getImageUrl(videoFile)}
-                          className="w-full h-full object-cover"
-                          controls
-                          playsInline
+                          className="w-full h-full object-cover pointer-events-none"
                           preload="metadata"
+                          muted
                         >
                           您的浏览器不支持视频播放
                         </video>
-                        <div className="absolute inset-x-0 bottom-0 px-3 py-2 bg-gradient-to-t from-black/55 to-transparent pointer-events-none">
-                          <p className="text-[11px] sm:text-xs text-white/90">
-                            点击播放，使用控件查看；如需全屏可使用播放器自带按钮
-                          </p>
+                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-300 pointer-events-none" />
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          <div className="w-12 h-12 bg-black/55 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                            <svg className="w-6 h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
                         </div>
-                      </div>
+                        <div className="absolute inset-x-0 bottom-0 px-3 py-2 bg-gradient-to-t from-black/65 to-transparent pointer-events-none">
+                          <p className="text-[11px] sm:text-xs text-white/90">点击打开大窗口播放视频</p>
+                        </div>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -302,6 +319,18 @@ const DiaryDetail = () => {
         />
       )}
 
+
+      {/* 视频查看器 */}
+      {showVideoViewer && selectedVideo && (
+        <VideoViewer
+          src={selectedVideo}
+          title={diary.title}
+          onClose={() => {
+            setShowVideoViewer(false);
+            setSelectedVideo(null);
+          }}
+        />
+      )}
       {/* 删除确认模态框 */}
       {showDeleteModal && (
         <div

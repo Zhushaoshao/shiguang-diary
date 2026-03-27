@@ -116,35 +116,35 @@ const DiaryDetail = () => {
     <div className="min-h-screen bg-neutral-bg">
       {/* 顶部导航栏 - 玻璃纸质效果 */}
       <header className="glass-paper sticky top-0 z-10 border-b border-neutral-border/30">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-3 lg:py-4">
+          <div className="flex items-center justify-between gap-3">
             <button
               onClick={() => navigate(-1)}
-              className="btn-back"
+              className="btn-back-compact lg:btn-back"
               aria-label="返回"
             >
               <ArrowLeft size={20} strokeWidth={2.25} />
-              <span>返回</span>
+              <span className="hidden lg:inline">返回</span>
             </button>
 
             {/* 操作按钮 */}
             {isAuthor && (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 lg:gap-3">
                 <button
                   onClick={() => navigate(`/write?id=${diary.id}`)}
-                  className="btn-paper border-2 border-primary-500 text-primary-500 hover:bg-primary-50"
+                  className="btn-paper border-2 border-primary-500 text-primary-500 hover:bg-primary-50 px-3 lg:px-6"
                   aria-label="编辑日记"
                 >
                   <Edit size={18} strokeWidth={2} />
-                  <span>编辑</span>
+                  <span className="hidden sm:inline">编辑</span>
                 </button>
                 <button
                   onClick={() => setShowDeleteModal(true)}
-                  className="btn-paper border-2 border-error text-error hover:bg-red-50"
+                  className="btn-paper border-2 border-error text-error hover:bg-red-50 px-3 lg:px-6"
                   aria-label="删除日记"
                 >
                   <Trash2 size={18} strokeWidth={2} />
-                  <span>删除</span>
+                  <span className="hidden sm:inline">删除</span>
                 </button>
               </div>
             )}

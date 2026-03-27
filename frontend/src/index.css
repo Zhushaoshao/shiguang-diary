@@ -202,6 +202,24 @@
     @apply w-10 h-10 p-0 justify-center;
   }
 
+  /* 紧凑返回按钮 - 移动端优先 */
+  .btn-back-compact {
+    @apply inline-flex items-center justify-center rounded-xl;
+    @apply w-11 h-11 p-0;
+    @apply text-neutral-secondary hover:text-primary-600;
+    @apply bg-neutral-card/80 hover:bg-primary-50;
+    @apply border border-neutral-border shadow-paper-sm hover:shadow-paper;
+    @apply transition-all duration-300;
+  }
+
+  /* 图标热区按钮 */
+  .icon-action-btn {
+    @apply inline-flex items-center justify-center;
+    @apply w-11 h-11 rounded-xl;
+    @apply transition-all duration-300;
+  }
+
+
 
   /* 纸质卡片 */
   .card-paper {

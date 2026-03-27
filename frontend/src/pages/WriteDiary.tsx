@@ -209,18 +209,18 @@ const WriteDiary = () => {
     <div className="min-h-screen bg-neutral-bg">
       {/* 顶部导航栏 - 玻璃纸质效果 */}
       <header className="glass-paper sticky top-0 z-20 border-b border-neutral-border/30 animate-slide-down">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 lg:py-4">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
               <button
                 onClick={() => navigate(-1)}
-                className="btn-back"
+                className="btn-back-compact lg:btn-back"
                 aria-label="返回"
               >
                 <ArrowLeft size={20} strokeWidth={2.25} />
-                <span>返回</span>
+                <span className="hidden lg:inline">返回</span>
               </button>
-              <h1 className="text-2xl font-display font-semibold text-neutral-ink">
+              <h1 className="text-lg lg:text-2xl font-display font-semibold text-neutral-ink truncate">
                 {isEditMode ? '编辑日记' : '写日记'}
               </h1>
             </div>

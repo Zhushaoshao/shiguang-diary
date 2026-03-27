@@ -89,17 +89,17 @@ const BatchImport = () => {
     <div className="min-h-screen bg-neutral-bg">
       {/* 头部 */}
       <header className="glass-paper sticky top-0 z-10 border-b border-neutral-border/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 lg:py-4">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
               <button
                 onClick={() => navigate('/')}
-                className="btn-back btn-back-icon"
+                className="btn-back-compact lg:btn-back-icon lg:btn-back"
                 aria-label="返回首页"
               >
                 <ArrowLeft size={22} strokeWidth={2.4} />
               </button>
-              <h1 className="text-2xl font-display font-bold text-neutral-ink">多篇导入</h1>
+              <h1 className="text-lg lg:text-2xl font-display font-bold text-neutral-ink truncate">多篇导入</h1>
             </div>
 
             {diaries.length > 0 && (
@@ -209,13 +209,15 @@ const BatchImport = () => {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setEditingIndex(editingIndex === index ? null : index)}
-                        className="p-2 rounded-lg hover:bg-primary-50 text-primary-500 hover:scale-110 transition-all duration-300"
+                        className="icon-action-btn text-primary-500 hover:bg-primary-50 hover:scale-105"
+                        aria-label="编辑这篇日记"
                       >
                         <Edit2 size={18} />
                       </button>
                       <button
                         onClick={() => handleDelete(index)}
-                        className="p-2 rounded-lg hover:bg-red-50 text-error hover:scale-110 transition-all duration-300"
+                        className="icon-action-btn text-error hover:bg-red-50 hover:scale-105"
+                        aria-label="删除这篇日记"
                       >
                         <X size={18} />
                       </button>

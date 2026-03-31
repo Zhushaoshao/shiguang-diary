@@ -27,6 +27,18 @@ const testConnection = async () => {
 
 const ensureUserAvatarColumn = async () => {
   try {
+    const [tables] = await pool.query(
+      `SELECT TABLE_NAME
+       FROM information_schema.TABLES
+       WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'users'`,
+      [process.env.DB_NAME]
+    );
+
+    if (tables.length === 0) {
+      console.warn('⚠️ users 表尚不存在，跳过 avatar 字段补齐');
+      return;
+    }
+
     const [columns] = await pool.query(
       `SELECT COLUMN_NAME
        FROM information_schema.COLUMNS

@@ -11,8 +11,8 @@ async function initDatabase() {
     connection = await mysql.createConnection({
       host: process.env.DB_HOST,
       port: process.env.DB_PORT,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD
+      user: process.env.MYSQL_ROOT_USER || 'root',
+      password: process.env.MYSQL_ROOT_PASSWORD || process.env.DB_PASSWORD
     });
 
     console.log('✅ 已连接到 MySQL 服务器');
@@ -30,11 +30,17 @@ async function initDatabase() {
       }
     }
 
-    await connection.query(`
-      ALTER TABLE users
-      ADD COLUMN IF NOT EXISTS avatar VARCHAR(255) DEFAULT NULL
-    `);
+    const [avatarColumns] = await connection.query(
+      `SELECT COLUMN_NAME
+       FROM information_schema.COLUMNS
+       WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'users' AND COLUMN_NAME = 'avatar'`,
+      [process.env.DB_NAME]
+    );
 
+    if (avatarColumns.length === 0) {
+      await connection.query('ALTER TABLE users ADD COLUMN avatar VARCHAR(255) DEFAULT NULL');
+      console.log('✅ 已补齐 users.avatar 字段');
+    }
 
     console.log('✅ 数据库初始化成功');
     console.log(`✅ 数据库名称: ${process.env.DB_NAME}`);

@@ -7,12 +7,12 @@ import SearchBar from '../components/SearchBar';
 import LoadingSpinner from '../components/LoadingSpinner';
 import EmptyState from '../components/EmptyState';
 import HomeSkeleton from '../components/HomeSkeleton';
-import { ChevronUp, PenSquare, FileStack, LogOut, UserPlus, User, DoorOpen } from 'lucide-react';
+import { ChevronUp, PenSquare, FileStack, UserPlus, User, DoorOpen } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 
 const Home = () => {
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
 
   const [diaries, setDiaries] = useState<Diary[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -135,17 +135,17 @@ const Home = () => {
       <header className="glass-paper sticky top-0 z-10 border-b border-neutral-border/30 animate-slide-down">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* 顶部导航栏 */}
-          <div className="flex items-center justify-between py-4">
+          <div className="flex items-center justify-between gap-3 py-4">
             {/* Logo 和标题 */}
-            <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/')}>
-              <div className="w-12 h-12 rounded-lg bg-gradient-sunset flex items-center justify-center shadow-paper-sm group-hover:shadow-glow transition-all duration-500 group-hover:rotate-6">
-                <span className="text-white text-xl font-display font-bold">拾</span>
+            <div className="flex min-w-0 items-center gap-3 group cursor-pointer" onClick={() => navigate('/')}>
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-gradient-sunset flex items-center justify-center shadow-paper-sm group-hover:shadow-glow transition-all duration-500 group-hover:rotate-6 shrink-0">
+                <span className="text-white text-lg sm:text-xl font-display font-bold">拾</span>
               </div>
-              <h1 className="text-2xl font-display font-bold text-gradient-sunset">拾光日记</h1>
+              <h1 className="text-xl sm:text-2xl font-display font-bold text-gradient-sunset whitespace-nowrap truncate">拾光日记</h1>
             </div>
 
             {/* 操作按钮 */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
               {isAuthenticated ? (
                 <>
                   {/* 写日记按钮 */}
@@ -169,27 +169,18 @@ const Home = () => {
                   {/* 个人中心 */}
                   <button
                     onClick={() => navigate('/profile')}
-                    className="btn-paper flex items-center gap-2"
+                    className="btn-paper px-4 sm:px-6 flex items-center gap-2"
                   >
                     {avatarUrl ? (
                       <img
                         src={avatarUrl}
                         alt={user?.username || '用户头像'}
-                        className="w-7 h-7 rounded-md object-cover border border-neutral-border/60"
+                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-md object-cover border border-neutral-border/60 shrink-0"
                       />
                     ) : (
                       <User size={18} strokeWidth={2} />
                     )}
-                    <span className="hidden sm:inline">{user?.username}</span>
-                  </button>
-
-                  {/* 退出按钮 */}
-                  <button
-                    onClick={logout}
-                    className="btn-paper text-neutral-secondary hover:text-error hover:border-error flex items-center gap-2"
-                  >
-                    <LogOut size={18} strokeWidth={2} />
-                    <span className="hidden sm:inline">退出</span>
+                    <span className="hidden md:inline max-w-[96px] truncate">{user?.username}</span>
                   </button>
                 </>
               ) : (

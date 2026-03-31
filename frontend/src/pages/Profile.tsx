@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, ArrowLeft, Camera, Save } from 'lucide-react';
+import { Lock, ArrowLeft, Camera, Save, LogOut } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useToastStore } from '../store/toastStore';
 import api from '../lib/api';
@@ -222,6 +222,23 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div className="card-paper p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h2 className="text-xl font-display font-semibold text-neutral-ink">账号操作</h2>
+                <p className="text-sm text-neutral-secondary mt-1">你可以在这里安全退出当前账号。</p>
+              </div>
+              <button
+                type="button"
+                onClick={logout}
+                className="btn-paper text-neutral-secondary hover:text-error hover:border-error flex items-center justify-center gap-2"
+              >
+                <LogOut size={18} strokeWidth={2} />
+                <span>退出登录</span>
+              </button>
             </div>
           </div>
 

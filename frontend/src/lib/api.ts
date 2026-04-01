@@ -35,12 +35,19 @@ api.interceptors.response.use(
   },
   (error) => {
     console.error('API Response Error:', error.response?.status, error.message);
-    if (error.response?.status === 401) {
+
+    const status = error.response?.status;
+    const requestUrl = error.config?.url || '';
+    const hasToken = Boolean(localStorage.getItem('token'));
+    const isAuthRequest = requestUrl.includes('/auth/login') || requestUrl.includes('/auth/register');
+
+    if (status === 401 && hasToken && !isAuthRequest) {
       localStorage.removeItem('token');
       const currentPath = window.location.pathname + window.location.search;
       const next = encodeURIComponent(currentPath === '/login' ? '/' : currentPath);
       window.location.href = `/login?reason=expired&next=${next}`;
     }
+
     return Promise.reject(error);
   }
 );
